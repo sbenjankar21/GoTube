@@ -1,0 +1,15 @@
+<h2> Search Videos</h2>
+<form action ="/videos" method="GET">
+<label> Name </label>
+<input type ="text" name="name" value="<%= searchOptions.name%>">
+</form>
+<br>
+<% videos.forEach(video => { %>
+    <a href = "/videos/<%=video.id%>"><div><%=video.title%></div></a>
+    <a href = "<%= video.link%>" target="_blank">
+        <div class = "item">
+          <img class = "img" src="<%=video.imageAddress%>" alt="Lamp" width="50">
+          <p class = "vInfo" id = "overflo"> <%= video.title%><br> <%= video.author%></p>
+        </div>
+    </a> 
+<% }) %>

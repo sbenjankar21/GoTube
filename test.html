@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+function httpGet2(theUrl)
+{
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open( "GET", theUrl, false ); // false for synchronous request
+    xmlHttp.send( null );
+    return xmlHttp.responseText;
+}
+
+function httpGet(theUrl)
+{
+    const axios = require('axios')
+    var text = ''
+    axios.get('https://www.juniordevelopercentral.com/')
+    .then(result => {
+        console.log("here"+ result)
+        text = result.data
+    })
+    .catch(error => {
+        console.log(error)
+    })
+
+    return text
+}
+var video = httpGet('https://www.googleapis.com/youtube/v3/videos?part=snippet&id=SccSCuHhOw0&fields=items(id,snippet)&key=AIzaSyARlc8Jj0BqWyLS7DpFbkyZ6SHNyUepuqQ')
+var videoJson = JSON.parse(video)
+console.log(videoJson.items[0].snippet.title)
+
+    </script>
+
+</body>
+</html>
