@@ -1,0 +1,67 @@
+
+<h2> Search Videos</h2>
+<form action ="/reviews" method="GET">
+<label> Name </label>
+<input type ="text" name="name" value="<%= searchOptions.name%>">
+<select id = "mySelect" onchange="this.form.submit()" name="sort" id="cars">
+  <!-- <option value="" selected disabled hidden>Choose here</option> -->
+  <option value="a">Newest</option>
+  <option value="b">Oldest</option>
+  <option value="c">Average Rating</option>
+  <option value="d">Title</option>
+</select>
+</form>
+<script>
+  var temp = "<%=searchOptions.sort%>";
+  var mySelect = document.getElementById('mySelect');
+ // console.log(temp)
+  for(var i, j = 0; i = mySelect.options[j]; j++) {
+      if(i.value == temp) {
+          mySelect.selectedIndex = j;
+          break;
+      }
+  }
+  </script>
+<br>
+<% reviews.forEach(review => { %>
+  <% try { %>
+
+    <%review.video.title %>
+
+    <a href = "/reviews/<%=review.id%>" target="_blank">
+  
+
+        <div class = "review-item">
+          <img class = "review-profile" src = "https://lh3.googleusercontent.com/ogw/AF2bZyg8LME8PkRUVpKynXcvMylz-as6u7bm4mtFxsfhKUFWzg=s32-c-mo" alt="">
+          
+          <p class="review-profile-name"> <%=review.user.username%></p>
+          <img class = "review-img" src="<%=review.video.imageAddress%>" alt="Lamp" width="130">
+          <p class="review-video-title"> <%=review.video.title%></p>
+         
+          <div class = "stars">
+            <%=review.rating%>
+          </div>
+          <p class="review-video-content"> <%=review.content%></p>
+        </div>
+    </a> 
+    <% } catch {%>
+
+      <a href = "/reviews/<%=review.id%>" target="_blank">
+ 
+        <div class = "review-item">
+          <img class = "review-profile" src = "https://lh3.googleusercontent.com/ogw/AF2bZyg8LME8PkRUVpKynXcvMylz-as6u7bm4mtFxsfhKUFWzg=s32-c-mo" alt="">
+          
+          <p class="review-profile-name"> <%=review.user.username%></p>
+          <img class = "review-img" src="<%=review.song.imageAddress%>" alt="Lamp" width="130">
+          <p class="review-video-title"> <%=review.song.title%></p>
+         
+          <div class = "stars">
+            <%=review.rating%>
+          </div>
+          <p class="review-video-content"> <%=review.content%></p>
+        </div>
+    </a> 
+
+
+      <% } %>
+<% }) %>

@@ -1,0 +1,29 @@
+<p> <%= song.title%></p>
+<p> Ratings count: <%= song.totalStars/5%></p>
+<p> Stars: <%= song.stars%> / <%= song.totalStars%></p>
+<p> Average rating: <%= song.averageStars%> stars</p>
+<p> Date posted <%= song.datePosted%></p>
+ <a href = "https://open.spotify.com/track/<%= song.spotifyId%>" target="_blank">
+    <div class = "item">
+      <img class = "img" src="<%=song.imageAddress%>" alt="Lamp" width="50">
+      <p class = "vInfo" id = "overflo"> <%= song.title%><br> <%= song.artist%></p>
+    </div>
+</a> 
+
+
+<form action ="/songs/<%=song.id%>/new-like" method="POST">
+
+  <button type="submit">Like</button>
+</form>
+
+<br>
+<% reviews.forEach(review => { %>
+  <!-- <a href = "/reviews/<%=review.id%>"><div><%=review.title%></div></a> -->
+  <!-- <a href = "<%= review.link%>" target="_blank"> -->
+  <a href = "/reviews/<%=review.id%>" target="_blank">
+      <div class = "item">
+        <!-- <img class = "img" src="<%=review.song.imageAddress%>" alt="Lamp" width="50"> -->
+        <p class = "vInfo" id = "overflo"> <%= review.content%><br> <%= review.rating%> stars</p>
+      </div>
+  </a> 
+<% }) %>

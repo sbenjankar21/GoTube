@@ -1,0 +1,31 @@
+<% /* %>
+<!-- <p> <%= video.title%></p>
+<p> Ratings count: <%= video.totalStars/5%></p>
+<p> Stars: <%= video.stars%> / <%= video.totalStars%></p>
+<p> Average rating: <%= video.averageStars%> stars</p>
+<p> Date posted <%= video.datePosted%></p>
+ <a href = "<%= video.link%>" target="_blank">
+    <div class = "item">
+      <img class = "img" src="<%=video.imageAddress%>" alt="Lamp" width="50">
+      <p class = "vInfo" id = "overflo"> <%= video.title%><br> <%= video.author%></p>
+    </div>
+</a>  -->
+<% */ %>
+
+<% try { %>
+  <% review.video.title %>
+<div class = "item">
+  <img class = "img" src="<%=review.video.imageAddress%>" alt="Lamp" width="50">
+  <p class = "vInfo" id = "overflo"> <%= review.content%><br> </p>
+</div>
+<p><%=review.rating%> </p>
+
+<% } catch { %>
+
+  <div class = "item">
+    <img class = "img" src="<%=review.song.imageAddress%>" alt="Lamp" width="50">
+    <p class = "vInfo" id = "overflo"> <%= review.content%><br> </p>
+  </div>
+  <p><%=review.rating%> </p>
+
+<%  }%>

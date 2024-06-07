@@ -11,21 +11,39 @@
 
 <style>
 
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 
 .josefin-sans {
-  font-family: "Josefin Sans", sans-serif;
+  font-family: "Roboto", sans-serif;
 
 }
 p{
   
 }
+a, u {
+  text-decoration: none;
+}
+a:link {
+  color: rgb(179, 179, 179);
+  background-color: transparent;
+  text-decoration: none;
+}
+
+a:visited {
+  color: rgb(179, 179, 179);
+  background-color: transparent;
+  text-decoration: none;
+}
     body 
     {
         background-color: rgb(243, 243, 243);
-      background-color: rgb(31, 31, 31);
+      background-color: rgb(7, 7, 7);
       color:rgb(177, 177, 177);
       margin-top: 0px;
       font-family: "Roboto", sans-serif;
+      text-decoration: none;
     }
     
     .roboto-thin 
@@ -45,7 +63,7 @@ p{
     .roboto-regular 
     {
       font-family: "Roboto", sans-serif;
-      font-family: "Josefin Sans", sans-serif;
+      font-family: "Roboto", sans-serif;
       font-weight: 400;
       font-style: normal;
     }
@@ -162,7 +180,7 @@ p{
       cursor:pointer;
     }
 
-    .p2 
+    .p21 
     {
       font-size: 30px;
       font-family: "Roboto", sans-serif;
@@ -172,6 +190,11 @@ p{
       float: left;
       height: 10px;
       margin-top: 5px;
+    }
+    .p2{
+      color: rgb(207, 63, 63);
+      font-size: 25px;
+      text-align: center;
     }
 
     ul 
@@ -198,7 +221,7 @@ p{
     .review-profile
     {
       border-radius: 50%;
-      display: inline-block;
+      float: left;
       margin-right: 10px;
 
     }
@@ -243,30 +266,51 @@ p{
     .item
     {
 
-      margin: 20px auto 20px auto;
+      margin: 20px 70px 20px 0px;
       width: 360px;
       height: 270px;
       padding: 10px;
       background-color: rgb(10, 10, 10);
+      display:inline-block;
+    }
+
+    .song-item
+    {
+      margin: 20px 70px 20px 0px;
+      width: 200px;
+      height: 270px;
+      padding: 10px;
+      background-color: rgb(10, 10, 10);
+      display:inline-block;
     }
 
     .review-item
     {
 
-      margin: 20px auto 20px auto;
+      margin: 0px 0px 10px 20px;
       width: 360px;
       height: 200px;
       padding: 10px;
       background-color: rgb(10, 10, 10);
+      text-decoration: none;
+      display:inline-block;
     }
 
     .img
     {
       width: 360px;
+      height: 202.5px;
       display: inline-block;
       position: relative;
       margin-top: 10px;
      
+    }
+
+    .song-img
+    {
+      display: inline-block;
+      position: relative;
+      margin-top: 10px;
     }
 
     .vInfo
@@ -275,7 +319,7 @@ p{
       margin-top: 10px;
       margin-bottom:  10px;
       font-size: 15px;
-      color: rgb(209, 209, 209);
+      color: rgb(245, 245, 245);
 
     }
 
@@ -299,17 +343,18 @@ p{
     .review-profile-name
     {
       font-size: 10px;
-      display: inline;
-      margin-top: 0px;
-      
+      float: left;
+      margin-top: 10px;
+      text-decoration: none;
     }
 
     .review-video-title
     {
-      margin: 15px 10px 10px 10px;
+      margin: 40px 10px 10px 10px;
       width:185px;
       height: 30px;
       font-size: 15px;
+      text-decoration: none;
     }
     .review-video-content
     {
@@ -317,6 +362,7 @@ p{
       width:300px;
       height: 50px;
       font-size: 10px;
+      text-decoration: none;
     }
     .stars
     {
@@ -331,13 +377,36 @@ p{
       float: right;
       margin: 20px 15px 0px 0px;
     }
+
+   .form {
+
+  border: 0px solid #ccc;
+  border-radius: 5px;
+  margin-right: 10px;
+  width: 300px
+}
+.textA
+{
+  font-family: "Roboto", sans-serif;
+}
+
+input:focus, textarea:focus, select:focus{
+        outline: none;
+    }
+
+    select{
+      border: none;
+      border-color: rgb(255, 145, 0);
+    }
+
+    select:focus {
+    outline:none;
+}
   </style>
 <body>
 
 
-    <!-- Write youBeforer comments here -->
-    
-    <br>
+
     
     <%- include('../partials/header.ejs')%>
     <%- include('../partials/errorMessage.ejs')%>

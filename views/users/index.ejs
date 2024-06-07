@@ -1,0 +1,31 @@
+
+<h2> Search Videos</h2>
+<form action ="/reviews" method="GET">
+<label> Name </label>
+<input type ="text" name="name" value="temp">
+<select id = "mySelect" onchange="this.form.submit()" name="sort" id="cars">
+  <!-- <option value="" selected disabled hidden>Choose here</option> -->
+  <option value="a">Newest</option>
+  <option value="b">Oldest</option>
+  <option value="c">Average Rating</option>
+  <option value="d">Title</option>
+</select>
+</form>
+<script>
+
+//   //var temp = "";
+//   var mySelect = document.getElementById('mySelect');
+//  // console.log(temp)
+//   for(var i, j = 0; i = mySelect.options[j]; j++) {
+//       if(i.value == temp) {
+//           mySelect.selectedIndex = j;
+//           break;
+//       }
+//   }
+  </script>
+<br>
+<% users.forEach(user => { %>
+    <a href="/users/<%=user.id%>"> <%=user.username%></a>
+    <br>
+
+<% }) %>

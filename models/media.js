@@ -2,17 +2,23 @@
  * Video Schema
  */
 const mongoose = require('mongoose')
-const videoSchema = new mongoose.Schema({
+const movieSchema = new mongoose.Schema({
+    mediaType:
+    {
+        type: String,
+        required: true
+    },
+    mediaId:
+    {
+        type: String,
+        required: true
+    },
     title:
     {
         type: String,
         required: true
     },
-    link:
-    {
-        type: String,
-        required: true
-    },
+
     author:
     {
         type: String,
@@ -52,4 +58,4 @@ const videoSchema = new mongoose.Schema({
     }
 })
 
-module.exports = mongoose.model('Video', videoSchema)
+module.exports = mongoose.model('Movie', movieSchema)

@@ -12,12 +12,18 @@
   "license": "ISC",
   "dependencies": {
     "axios": "^1.6.8",
+    "bcrypt": "^5.1.1",
     "body-parser": "^1.20.2",
     "ejs": "^3.1.10",
     "express": "^4.19.2",
     "express-ejs-layouts": "^2.5.1",
+    "express-flash": "^0.0.2",
+    "express-session": "^1.18.0",
+    "method-override": "^3.0.0",
     "mongoose": "^8.3.5",
     "node-fetch": "^3.3.2",
+    "passport": "^0.7.0",
+    "passport-local": "^1.0.0",
     "xhr2": "^0.2.1"
   },
   "devDependencies": {

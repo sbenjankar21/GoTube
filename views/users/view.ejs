@@ -1,0 +1,94 @@
+<% /* %>
+<!-- <p> <%= video.title%></p>
+<p> Ratings count: <%= video.totalStars/5%></p>
+<p> Stars: <%= video.stars%> / <%= video.totalStars%></p>
+<p> Average rating: <%= video.averageStars%> stars</p>
+<p> Date posted <%= video.datePosted%></p>
+ <a href = "<%= video.link%>" target="_blank">
+    <div class = "item">
+      <img class = "img" src="<%=video.imageAddress%>" alt="Lamp" width="50">
+      <p class = "vInfo" id = "overflo"> <%= video.title%><br> <%= video.author%></p>
+    </div>
+</a>  -->
+
+
+<div class = "item">
+  <img class = "img" src="<%=review.video.imageAddress%>" alt="Lamp" width="50">
+  <p class = "vInfo" id = "overflo"> <%= review.content%><br> </p>
+</div>
+<p><%=review.rating%> </p>
+
+<% */ %>
+
+<h1><%=user.username%> </h1>
+<script>
+  import User from '../models/user'
+function friend()
+{
+  const friended = false;
+  if(!friended)
+  {
+
+friended = true;
+console.log(User.find().populate("friends"))
+  }
+
+}
+</script>
+<% reviews.forEach(review => { %>
+  <!-- <a href = "/reviews/<%=review.id%>"><div><%=review.title%></div></a> -->
+  <!-- <a href = "<%= review.link%>" target="_blank"> -->
+  <a href = "/reviews/<%=review.id%>" target="_blank">
+      <!-- <div class = "item">
+        <img class = "img" src="<%=review.video.imageAddress%>" alt="Lamp" width="50">
+        <p class = "vInfo" id = "overflo"> <%= review.content%><br> <%= review.rating%> stars</p>
+      </div> -->
+
+      <div class = "review-item">
+        <img class = "review-profile" src = "https://lh3.googleusercontent.com/ogw/AF2bZyg8LME8PkRUVpKynXcvMylz-as6u7bm4mtFxsfhKUFWzg=s32-c-mo" alt="">
+        
+        <p class="review-profile-name"> <%=review.user.username%></p>
+        <img class = "review-img" src="<%=review.video.imageAddress%>" alt="Lamp" width="130">
+        <p class="review-video-title"> <%=review.video.title%></p>
+       
+        <div class = "stars">
+          <%=review.rating%>
+        </div>
+        <p class="review-video-content"> <%=review.content%></p>
+      </div>
+  </a> 
+<% }) %>
+
+<% if (!user._id.equals(sesUser._id)) { %>
+  <!-- Code to be executed if the condition is true -->
+
+<form action ="/users/<%=user._id%>" method="POST">
+
+  <button type="submit">Friend</button>
+</form>
+
+<% } else { %>
+  <!-- Code to be executed if the condition is false -->
+<% } %>
+
+
+
+
+
+<br>
+<h1>Friends</h1>
+<% user.friends.forEach(friend => { %>
+  <a href="/users/<%=friend.id%>"> <%=friend.username%></a>
+  <br>
+
+<% }) %>
+
+<br>
+<h1>Likes</h1>
+<% user.likedVideos.forEach(video => { %>
+  <a href = "/videos/<%=video.id%>" target="_blank">
+    <div class = "item">
+      <img class = "img" src="<%=video.imageAddress%>" alt="Lamp" width="50">
+      <p class = "vInfo" id = "overflo"> <span style ="font-size: 20px; "><%= video.title%></span><br> <span style="font-size: 12.5px; color:rgb(170, 170, 170)"><%= video.author%></span></p>
+    </div>
+<% }) %>
