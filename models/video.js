@@ -49,6 +49,16 @@ const videoSchema = new mongoose.Schema({
         type: [mongoose.Schema.Types.ObjectId],
         required: false,
         ref: "Review"
+    },
+    youtubeId:
+    {
+        type: String,
+        required: true
+    },
+    backgroundColor:
+    {
+        type: String,
+        required: false
     }
 })
 

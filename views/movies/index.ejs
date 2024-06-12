@@ -26,9 +26,9 @@
 <% movies.forEach(movie => { %>
     <!-- <a href = "/videos/<%=movie.id%>"><div><%=movie.title%></div></a> -->
     <!-- <a href = "<%= movie.imdbId%>" target="_blank"> -->
-    <a href = "/songs/<%=movie.id%>" target="_blank">
+    <a href = "/movies/<%=movie.id%>" target="_blank">
         <div class = "song-item">
-          <img class = "song-img" src="<%=movie.imageAddress%>" alt="Lamp" width="200px">
+          <img class = "song-img" src="https://image.tmdb.org/t/p/original<%=movie.imageAddress%>" alt="Lamp" width="200px">
           <p class = "vInfo" id = "overflo"> <span style ="font-size: 20px; "><%= movie.title%></span><br> <span style="font-size: 12.5px; color:rgb(170, 170, 170)"><%= movie.director%></span></p>
         </div>
     </a> 

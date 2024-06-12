@@ -1,6 +1,125 @@
-<h2></h2>New book</h2>
-<form action ="/books" method="POST">
-    <%- include('_form_fields') %>
-    <a href ="/books">Cancel</a>
-    <button type="submit">Create</button>
-</form>
+<style>
+.video-button
+{
+    margin: auto auto;  
+    transition: background-color 0.2s;
+    transition: transform 0.2s;
+    width: 355px;
+    text-align: center;
+}
+.song-button
+{
+    margin: auto auto;  
+    transition: background-color 0.2s;
+    transition: transform 0.2s;
+    width: 355px;
+    text-align: center;
+}
+.movie-button
+{
+    margin: auto auto;  
+    transition: background-color 0.2s;
+    transition: transform 0.2s;
+    width: 355px;
+    text-align: center;
+}
+
+.button-image
+{
+    text-align: center;
+}
+.button-text
+{
+    text-align: center;
+    color: white;
+}
+
+
+
+
+    .song-button:hover
+    {
+      transform: scale(1.1);
+      background-color: rgb(0, 90, 0);
+
+    }
+
+
+    .video-button:hover 
+    {
+      transform: scale(1.1);
+      background-color: rgb(90, 0, 0);
+
+    }
+
+    .movie-button:hover
+    {
+      transform: scale(1.1);
+      background-color: rgb(32, 0, 90);
+
+    }
+
+ 
+    .button-container:has(.movie-button:hover)
+    {
+        background-color: rgb(32, 0, 90);
+    }
+
+    .button-container:has(.song-button:hover:hover)
+    {
+        background-color: rgb(0, 90, 0);
+    }
+
+    .button-container:has(.video-button:hover)
+    {
+        background-color: rgb(90, 0, 0);
+
+    }
+
+
+    
+ 
+    .button-container
+{
+    height: 800px;
+    width: 100%;
+    display: inline-flex;
+    transition: background-color 0.2s;
+    /* background-color: rgb(90, 0, 0); */
+}
+
+  
+</style>
+
+
+<div class="button-container">
+
+
+<a href="/videos/new" class = "video-button" style="display: block;">
+
+    <img src="https://cdn3.iconfinder.com/data/icons/social-network-30/512/social-06-512.png" style="height: 300px;" class="button-image">
+    <p class="button-text">New Video</p>
+
+</a>
+
+
+
+
+<a href="/movies/new" class = "movie-button" style="display: block;">
+
+    <img src="/movie.png" style="height: 300px;" class="button-image"> 
+    <p class="button-text">New Movie</p>
+
+</a>
+
+
+
+
+<a href="/songs/new" class = "song-button" style="display: block;">
+
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Spotify_logo_without_text.svg/1024px-Spotify_logo_without_text.svg.png" style="height: 300px;" class="button-image">
+    <p class="button-text">New Song</p>
+
+</a>
+
+</div>

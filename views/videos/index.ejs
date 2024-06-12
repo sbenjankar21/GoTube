@@ -1,3 +1,14 @@
+<style>
+.vid-item
+{
+  transition: transform 0.2s;
+}
+
+.vid-item:hover{
+  transform: scale(1.1);
+}
+</style>
+
 
 <h2> Search Videos</h2>
 <form action ="/videos" method="GET">
@@ -26,8 +37,8 @@
 <% videos.forEach(video => { %>
     <!-- <a href = "/videos/<%=video.id%>"><div><%=video.title%></div></a> -->
     <!-- <a href = "<%= video.link%>" target="_blank"> -->
-    <a href = "/videos/<%=video.id%>" target="_blank">
-        <div class = "item">
+    <a href = "/videos/<%=video.id%>">
+        <div class = "item vid-item">
           <img class = "img" src="<%=video.imageAddress%>" alt="Lamp" width="50">
           <p class = "vInfo" id = "overflo"> <span style ="font-size: 20px; "><%= video.title%></span><br> <span style="font-size: 12.5px; color:rgb(170, 170, 170)"><%= video.author%></span></p>
         </div>

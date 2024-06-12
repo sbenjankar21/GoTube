@@ -29,6 +29,13 @@ const userSchema = new mongoose.Schema({
         type: [mongoose.Schema.Types.ObjectId],
         required: false,
         ref: "Video"
+    },
+    favoriteSongs:
+    {
+        type: [mongoose.Schema.Types.Mixed],
+        required: false,
+        ref: "Song",
+        default: [null, null, null, null, null]
     }
 
 

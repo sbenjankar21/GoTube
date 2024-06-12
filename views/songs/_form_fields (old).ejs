@@ -1,0 +1,406 @@
+<style>
+    .song-item-result:hover
+    {
+        background-color: rgb(83, 83, 83);
+    }
+
+</style>
+<label>Song</label> 
+<script>
+  console.log("sdfsd")
+  async function getPreviewURL(trackId)
+{
+  console.log('https://open.spotify.com/embed/track/'+trackId)
+  try
+  {
+  const response = await fetch("https://open.spotify.com/embed/track/5TRPicyLGbAF2LGBFbHGvO",{mode: 'no-cors'})
+  console.log(await response)
+  }
+
+  catch(e)
+  {
+    console.log(e)
+  }
+  var content = await response.text()
+  console.log( await response.text())
+  var scriptContent = content.getElementById('__NEXT_DATA__')
+  console.log(scriptContent.innerHTML)
+}
+
+    var tempToken = "<%=token%>";
+
+
+    async function getAuthl()
+{
+    try{
+      //make post request to SPOTIFY API for access token, sending relavent info
+      const token_url = 'https://accounts.spotify.com/api/token';
+      //const data = qs.stringify({'grant_type':'client_credentials'});
+      data = "grant_type=client_credentials&client_id=dc276981aa7543689c8bbd74979846ce&client_secret=c058d32f7ada4598926d803f3024ce95"
+  
+      const response = await axios({
+
+        method: 'post',
+        url: token_url,
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded' 
+        },
+        data: data
+      });
+
+    //   const response = await axios.post(token_url, data, {
+    //     headers: { 
+    //       'Content-Type': 'application/x-www-form-urlencoded' 
+    //     }
+    //   })
+      //return access token
+      console.log(response.data.access_token)
+
+      return await response.data.access_token;
+      //consawole.log(response.data.access_token);   
+    }
+
+
+    catch(error){
+      //on fail, log the error in console
+      console.log("BROKe")
+      console.log(error);
+    }
+  }
+
+
+    async function updateToken()
+{
+    try{
+      //make post request to SPOTIFY API for access token, sending relavent info
+      const token_url = 'https://accounts.spotify.com/api/token';
+      //const data = qs.stringify({'grant_type':'client_credentials'});
+      data = "grant_type=client_credentials&client_id=dc276981aa7543689c8bbd74979846ce&client_secret=c058d32f7ada4598926d803f3024ce95"
+  
+      const response = await fetch(token_url, {
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded' 
+        },
+        body: data
+      });
+
+    //   const response = await axios.post(token_url, data, {
+    //     headers: { 
+    //       'Content-Type': 'application/x-www-form-urlencoded' 
+    //     }
+    //   })
+      //return access token
+      console.log("HEEEEEEEEEEEEERE")
+      var resJson = await response.json()
+      console.log(resJson.access_token)
+
+
+      try{
+        await fetch("/songs/update-token", {
+            method: "POST",
+            headers: {
+                      'Accept': 'application/json',
+        'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                newToken: resJson.access_token
+        })
+        })
+      }
+      catch(e)
+      {
+        console.log(e)
+      }
+
+      return await response.body.access_token;
+      //consawole.log(response.data.access_token);   
+    }
+
+
+    catch(error){
+      //on fail, log the error in console
+      console.log("BROKe")
+      console.log(error);
+    }
+  }
+
+  
+    async function sendData(s)
+{
+  //getPreviewURL(s.id)
+  
+    var rting = document.getElementById("rating-input")
+    var txarea = document.getElementById("text-area")
+    console.log(rting.value)
+    try{
+        
+        var fr = await fetch("/songs", {
+        method: "POST",
+        redirect: 'follow',
+        headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+        body: JSON.stringify({
+            rating: rting.value,
+            content: txarea.value,
+            song: s
+        })
+    })
+
+    if(fr.redirected)
+    {
+        window.location.href = fr.url;
+    }
+    }
+
+    catch(e)
+    {
+        console.log(e)
+    }
+
+}
+
+
+function chooseSong(id, results)
+{
+    var song = results.tracks.items[id]
+    var containerDiv = document.getElementById("container")
+    containerDiv.replaceChildren()
+
+
+    var songDiv = document.createElement("div")
+        songDiv.style.width = "900px"
+        songDiv.style.height = "100px"
+
+
+        var songImage = document.createElement("img")
+        songImage.src = song.album.images[0].url
+        songImage.style.height = "100px"
+        songImage.style.width = "100px"
+        songImage.style.float = "left"
+
+        songDiv.appendChild(songImage)
+
+        var titleP = document.createElement("p")
+        titleP.innerHTML = song.name
+        titleP.style.color = "rgb(255,255, 255)"
+        var artistP = document.createElement("p")
+        artistP.innerHTML = song.artists[0].name
+
+        var infoDiv = document.createElement("div")
+        infoDiv.appendChild(titleP)
+        infoDiv.appendChild(artistP)
+        infoDiv.style.margin= " auto 0px auto 20px "
+
+    //     position:relative;
+    // top:-2px;
+        // infoDiv.style.position = "relative"
+        // infoDiv.style.top = "-2px"
+        //infoDiv.style.display = "inline-block"
+        //infoDiv.style.marginTop = "-50px"
+        infoDiv.style.float = "left"
+
+        songDiv.append(infoDiv)
+        songDiv.classList.add("song-item-result")
+        containerDiv.appendChild(songDiv)
+// <label >Rating</label>
+// <input style="width: 40px; margin-bottom: 10px;" type="text" name="rating" value=" "> 
+// <br>
+// <label>Content</label>
+
+// <br>
+// <textarea class = "textA" name="content" rows="4" cols="50"></textarea>
+
+var ratingLabel = document.createElement("label")
+ratingLabel.innerHTML = "Rating"
+containerDiv.appendChild(ratingLabel)
+
+var inputElement = document.createElement("input")
+inputElement.style.width = "40px"
+inputElement.style.marginBottom = "10px"
+inputElement.type = "text"
+inputElement.name = "rating"
+inputElement.value = ""
+inputElement.id = "rating-input"
+containerDiv.appendChild(inputElement)
+
+var breakElement = document.createElement("br")
+containerDiv.appendChild(breakElement)
+
+var contentLabel = document.createElement("label")
+contentLabel.innerHTML = "Content"
+containerDiv.appendChild(contentLabel)
+
+var newBreak = document.createElement("br")
+containerDiv.appendChild(newBreak)
+
+var textArea = document.createElement("textarea")
+textArea.classList.add("textA")
+textArea.name = "content"
+textArea.rows = "4"
+textArea.cols = "50"
+textArea.id = "text-area"
+containerDiv.append(textArea)
+
+
+// <a href ="/videos">Cancel</a>
+//     <button type="submit">Create</button>
+
+var anchor = document.createElement("a")
+anchor.href = "/songs"
+anchor.innerHTML = "Cancel"
+containerDiv.appendChild(anchor)
+
+var newButton = document.createElement("button")
+newButton.type = "submit"
+newButton.innerHTML = "Create"
+newButton.onclick = function() {sendData(song)}
+containerDiv.appendChild(newButton)
+
+    console.log(song.name)
+}
+
+
+
+
+
+
+    async function sendRequest(value)
+    {
+        console.log("change")
+        // try{
+
+        // console.log(value)
+        // const response = await fetch("/songs/search?title="+value, {method: "GET"})
+        // const songs = await response.json()
+        // //console.log(songs.info)
+        // return response
+        // }
+        // catch(e){
+        //     console.log(e)
+        // }
+        var songResults
+        if(value != "")
+        {
+
+        try{
+
+                if(value != "")
+                {
+        console.log("search: " + value)
+
+
+    //     const response = await fetch('https://api.spotify.com/v1/search?q=n&type=track', {
+    //     method: 'GET',
+    //     headers: {
+    //         "Authorization": 'Bearer BQBw6wscbn5otWn_zZgZd_GNVu2Vji4wDiyDl8_ed7CJ-jjXvF9-7rai54Ox57VGieZbn4yo8M02jjZ1nYuDug4QQMr98Qcy4Og3NbZL1lIGAJfbbiA'
+    //     }
+    //   });
+
+                    console.log("trying")
+      const response = await fetch('https://api.spotify.com/v1/search?q='+value+'&type=track', {
+        method: 'GET',
+        headers: {
+            "Authorization": 'Bearer '+ tempToken
+        }
+      });
+
+      if(!response.ok)
+      {
+        throw new Error('Something went wrong');
+      }
+      songResults = await response.json()
+      //console.log(songResults.tracks)
+    }
+    }
+
+    catch(e){
+        console.log("going through here")
+console.log(e)
+const newKey = await updateToken()
+console.log("top")
+console.log(newKey)
+console.log("bottom")
+const response = await fetch('https://api.spotify.com/v1/search?q='+value+'&type=track', {
+        method: 'GET',
+        headers: {
+            "Authorization": 'Bearer ' + newKey
+        }
+      });
+
+      songResults = await response.json()
+      console.log(songResults)
+
+    }
+
+
+
+    try{
+    //var newDiv = document.createElement("div")
+    var resultDiv = document.getElementById("results")
+    //resultDiv.remove()
+    //newDiv.id = "results"
+
+    var newChildren = []
+    var tempDiv = document.createElement('div')
+    resultDiv.replaceChildren()
+    var songId = 0;
+    songResults.tracks.items.forEach(song => {
+
+        var songDiv = document.createElement("div")
+        songDiv.style.width = "900px"
+        songDiv.style.height = "100px"
+
+
+        var songImage = document.createElement("img")
+        songImage.src = song.album.images[0].url
+        songImage.style.height = "100px"
+        songImage.style.width = "100px"
+        songImage.style.float = "left"
+
+        songDiv.appendChild(songImage)
+
+        var titleP = document.createElement("p")
+        titleP.innerHTML = song.name
+        titleP.style.color = "rgb(255,255, 255)"
+        var artistP = document.createElement("p")
+        artistP.innerHTML = song.artists[0].name
+
+        var infoDiv = document.createElement("div")
+        infoDiv.appendChild(titleP)
+        infoDiv.appendChild(artistP)
+        infoDiv.style.margin= " auto 0px auto 20px "
+
+    //     position:relative;
+    // top:-2px;
+        // infoDiv.style.position = "relative"
+        // infoDiv.style.top = "-2px"
+        //infoDiv.style.display = "inline-block"
+        //infoDiv.style.marginTop = "-50px"
+        infoDiv.style.float = "left"
+
+        songDiv.append(infoDiv)
+        songDiv.classList.add("song-item-result")
+        songDiv.id = songId.toString();
+        resultDiv.append(songDiv)
+
+        songDiv.onclick = function() {chooseSong(this.id, songResults)}
+        songId++
+    })
+
+    //document.body.appendChild(newDiv)
+    //console.log(tempDiv.children)
+    //resultDiv.children = tempDiv.children
+    }
+    catch(e)
+    {
+        console.log(e)
+    }
+        }
+
+
+    }
+</script>
+<input style="margin-bottom: 10px;" class="form" type="text" name="name" value="test" onkeyup="sendRequest(this.value)">

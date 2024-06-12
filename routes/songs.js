@@ -7,6 +7,31 @@ const { parse } = require('dotenv')
 
 var spotify_token = "BQDc6o9uuqykQ8v2Rk-nvJetYFWAXAtMT6k46XSLp2BIOtLadit_B_fE7-juN61wHzOycx_f9yGOJmTLCydk4hFCmzUM3OeoFFZewvUHqckrLQt_flo"
 
+function extractAudioPreviewUrls(inputText) {
+  const urls = [];
+  const regex = /"audioPreview":\{"url":"(.*?)"/g;
+  let match;
+
+  while ((match = regex.exec(inputText)) !== null) {
+      urls.push(match[1]);
+  }
+
+  return urls;
+}
+
+function extractBackgroundColors(inputText) {
+  const colors = [];
+  const regex = /--background-color:\s*([^;]+);/g;
+  let match;
+
+  while ((match = regex.exec(inputText)) !== null) {
+      colors.push(match[1].trim());
+  }
+
+  return colors;
+}
+
+
 function checkAuthenticated(req, res, next)
 {
 
@@ -15,6 +40,21 @@ function checkAuthenticated(req, res, next)
     }
 
      res.redirect('/login')
+}
+
+async function getPreviewURL(trackId)
+{
+  const response = await axios({
+    method: 'get',
+    url: 'https://open.spotify.com/embed/track/'+trackId,
+    responseType: 'document'
+  })
+
+  var content = response.data
+  console.log(extractAudioPreviewUrls(response.data)[0])
+  console.log(extractBackgroundColors(response.data)[0])
+  return [extractAudioPreviewUrls(response.data)[0], extractBackgroundColors(response.data)[0]]
+
 }
 
 async function getAuth()
@@ -57,12 +97,43 @@ async function getAuth()
   }
 
 router.get('/', checkAuthenticated, async (req,res) =>{
-    const songs = await Song.find()
 
+  let searchOptions = {}
+  let sortOptions = {}
+  if(req.query.name != null & req.query.name !== "")
+      {
+          searchOptions.title = new RegExp(req.query.name, 'i')
+      }
+      console.log("ooga"+req.query.sort);
+      
+  if(req.query.sort === "a")
+      {
+sortOptions.datePosted = -1;
+      }
+  else if(req.query.sort === "b")
+  {
+      sortOptions.datePosted = 1;
+  }
+
+  else if(req.query.sort === "c")
+  {
+
+  sortOptions.averageStars = -1;
+  }
+
+  else if(req.query.sort === "d")
+      {
+          sortOptions.title = 1;
+      }
+
+
+
+    //const songs = await Song.find()
+    const songs = await Song.find(searchOptions).collation({locale: "en" }).sort(sortOptions)
   console.log(songs)
     res.render('songs/index',{
         //users: myUsers
-        searchOptions: {},
+        searchOptions: req.query,
         songs: songs
     })
 })
@@ -90,7 +161,8 @@ router.get('/new', checkAuthenticated, async (req,res) =>{
    // const myUsers = await User.find()
    //console.log(getAuth()) //------------------
     res.render('songs/new',{
-        token: spotify_token
+        token: spotify_token,
+        layout:false
     })
 })
 
@@ -111,11 +183,14 @@ router.post('/', checkAuthenticated, async (req,res) =>{
   var content = req.body.content
   
  // console.log(req)
+  var pURL = await getPreviewURL(song.id)
+
   //console.log(res.json())
   //console.log("going through hereeee")
   //console.log(rating)
   try{
     var songs = await Song.find({spotifyId: song.id})
+    console.log(song)
     const newSong = new Song(
       {
           title: song.name,
@@ -125,7 +200,9 @@ router.post('/', checkAuthenticated, async (req,res) =>{
           stars: parseInt(rating),
           datePosted: Date.now(),
           imageAddress: song.album.images[0].url,
-          averageStars: (parseInt(rating)/5* 5).toFixed(2)
+          averageStars: (parseInt(rating)/5* 5).toFixed(2),
+          previewURL: pURL[0],
+          backgroundColor: pURL[1]
       })
     if(songs.length === 0)
       {
@@ -228,7 +305,7 @@ router.post('/', checkAuthenticated, async (req,res) =>{
 router.get('/:id',checkAuthenticated, async (req, res) => {
   try {
       const song = await Song.findById(req.params.id)
-      const reviews = await Review.find({song: song}).populate("song")
+      const reviews = await Review.find({song: song}).populate("song").populate("user")
 
       //const books = await Book.find({ video: video.id }).limit(6).exec()
       res.render('songs/view', {

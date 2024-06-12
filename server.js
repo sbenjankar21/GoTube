@@ -3,6 +3,9 @@ if(process.env.NODE_ENV !== 'production')
         require('dotenv').config()
     }
     const User = require('./models/user')
+    // const cors = require('cors')
+
+  
 const express = require('express')
 const axios = require('axios')
 const app = express()
@@ -25,6 +28,8 @@ const registerRouter = require('./routes/register')
 const usersRouter = require('./routes/users')
 const songsRouter = require('./routes/songs')
 const moviesRouter = require('./routes/movies')
+const proxyRouter = require('./routes/proxy')
+const settingsRouter = require('./routes/settings')
 
 app.set('view engine', 'ejs')
 app.set('views', __dirname + '/views')
@@ -57,12 +62,21 @@ app.use('/register', registerRouter)
 app.use('/users', usersRouter)
 app.use('/songs', songsRouter)
 app.use('/movies', moviesRouter)
+app.use('/proxy', proxyRouter)
+app.use('/settings', settingsRouter)
+
 app.delete('/logout', (req, res) => {
     req.logout(function(err) {
         if (err) { return next(err); }
         res.redirect('/');
       });
 })
-
+// app.use(cors({
+//     origin: "*",
+//     methods: "GET",
+//     preflightContinue: false,
+//     optionsSuccessStatus: 204,
+//     credentials: true
+//   }));
 
 app.listen(process.env.PORT || 3000)

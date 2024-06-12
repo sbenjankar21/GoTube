@@ -135,6 +135,7 @@ router.get('/', checkAuthenticated, async (req, res) => {
             searchOptions.title = new RegExp(req.query.name, 'i')
         }
         console.log("ooga"+req.query.sort);
+        
     if(req.query.sort === "a")
         {
 sortOptions.datePosted = -1;
@@ -176,15 +177,16 @@ sortOptions.datePosted = -1;
 
 // new video route
 router.get('/new', checkAuthenticated,(req, res) => {
-    res.render('videos/new', { video: new Video()})
+    res.render('videos/new', { video: new Video(), layout: false})
 })
 
 //console.log("test" + httpGet('https://www.googleapis.com/youtube/v3/videos?part=snippet&id=MouZdENJddQ&fields=items(id,snippet)&key=AIzaSyARlc8Jj0BqWyLS7DpFbkyZ6SHNyUepuqQ'))
 router.post('/', checkAuthenticated,async (req, res) => {
 
-    var text = req.body.name;
+    var text = req.body.link;
     var rating = req.body.rating;
     var con = req.body.content;
+    console.log(req.body.bgcolor)
     try
     {
     var url = 'https://www.googleapis.com/youtube/v3/videos?part=snippet&id='+getSecondPart(text)+'&fields=items(id,snippet)&key=AIzaSyARlc8Jj0BqWyLS7DpFbkyZ6SHNyUepuqQ'
@@ -192,16 +194,19 @@ router.post('/', checkAuthenticated,async (req, res) => {
      var vids = await Video.find({imageAddress: "https://img.youtube.com/vi/"+getSecondPart(text)+"/hq720.jpg"});
      console.log(vids.length)
      var videoJson = vid //------
+
      const video = new Video(
          {
              title: videoJson.items[0].snippet.title,
-             link: req.body.name,
+             link: text,
              author: videoJson.items[0].snippet.channelTitle,
              totalStars: 5,
              stars: parseInt(rating),
              datePosted: Date.now(),
-             imageAddress: "https://img.youtube.com/vi/"+getSecondPart(req.body.name)+"/hq720.jpg",
-             averageStars: (parseInt(rating)/5* 5).toFixed(2)
+             imageAddress: "https://img.youtube.com/vi/"+getSecondPart(text)+"/hq720.jpg",
+             averageStars: (parseInt(rating)/5* 5).toFixed(2),
+             youtubeId: getSecondPart(text),
+             backgroundColor: req.body.bgcolor
          })
 
 
@@ -272,6 +277,7 @@ router.post('/', checkAuthenticated,async (req, res) => {
     }
     catch(e)
     {
+        console.log("WHY NO RENDER")
         console.log(e)
         res.render('videos/new',{
             video: {link: req.body.name},
@@ -282,9 +288,10 @@ router.post('/', checkAuthenticated,async (req, res) => {
 
 // new view route
 router.get('/:id',checkAuthenticated, async (req, res) => {
+    console.log("through here>????")
     try {
         const video = await Video.findById(req.params.id)
-        const reviews = await Review.find({video: video}).populate("video")
+        const reviews = await Review.find({video: video}).populate(["video","user"])
 
         //const books = await Book.find({ video: video.id }).limit(6).exec()
         res.render('videos/view', {
@@ -294,9 +301,11 @@ router.get('/:id',checkAuthenticated, async (req, res) => {
         })
       } catch {
        res.redirect('/')
-       console.log("uhh")
+       console.log("uhh?")
       }
 })
+
+
 
 router.post('/:id/new-like', checkAuthenticated, async(req,res) =>
 {

@@ -7,6 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GoTube</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 
 <style>
@@ -24,10 +25,11 @@ p{
 }
 a, u {
   text-decoration: none;
+  /* display: block; */
 }
 a:link {
   color: rgb(179, 179, 179);
-  background-color: transparent;
+  /* background-color: transparent; */
   text-decoration: none;
 }
 
@@ -44,6 +46,8 @@ a:visited {
       margin-top: 0px;
       font-family: "Roboto", sans-serif;
       text-decoration: none;
+      margin: 0px 0px 0px 0px;
+      
     }
     
     .roboto-thin 
@@ -169,13 +173,14 @@ a:visited {
       color:rgb(177, 177, 177);
 
       text-decoration: none;
+      transition: background 0.7s;
     }
 
     .mainbutton:hover 
     {
       background:rgba(248, 100, 100,20);
    
-      transition:0.7s;
+      /* transition:0.7s; */
       /*width:130px; */
       cursor:pointer;
     }
@@ -276,13 +281,21 @@ a:visited {
 
     .song-item
     {
-      margin: 20px 70px 20px 0px;
+    
+      /* margin: 20px 70px 20px 0px; */
       width: 200px;
       height: 270px;
       padding: 10px;
       background-color: rgb(10, 10, 10);
       display:inline-block;
+      transition: transform 0.2s;
+      margin: 0px auto 20px auto;
     }
+
+      .song-item:hover
+      {
+        transform: scale(1.1);
+      }
 
     .review-item
     {
@@ -315,12 +328,12 @@ a:visited {
 
     .vInfo
     {
-      height: 5px;
+      height: 18px;
       margin-top: 10px;
-      margin-bottom:  10px;
+      margin-bottom:  5px;
       font-size: 15px;
       color: rgb(245, 245, 245);
-
+      /* white-space: nowrap; */
     }
 
     div 
@@ -411,7 +424,8 @@ input:focus, textarea:focus, select:focus{
     <%- include('../partials/header.ejs')%>
     <%- include('../partials/errorMessage.ejs')%>
     <%- body %>
-    <br>
-    After
+    
 </body>
+
+
 </html>

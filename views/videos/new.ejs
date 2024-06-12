@@ -1,6 +1,485 @@
-<h2  style="font-size: 30px;">New Video</h2>
-<form action ="/videos" method="POST">
+
+<!-- </form> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GoTube</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+
+<style>
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+.josefin-sans {
+  font-family: "Roboto", sans-serif;
+
+}
+p{
+  
+}
+a, u {
+  text-decoration: none;
+  /* display: block; */
+}
+a:link {
+  color: rgb(179, 179, 179);
+  /* background-color: transparent; */
+  text-decoration: none;
+}
+
+a:visited {
+  color: rgb(179, 179, 179);
+  background-color: transparent;
+  text-decoration: none;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+.box {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+  align-items: center;
+}
+
+.box .row.header {
+  flex: 0 1 auto;
+  /* The above is shorthand for:
+  flex-grow: 0,
+  flex-shrink: 1,
+  flex-basis: auto
+
+  */
+}
+
+.box .row.content {
+  flex: 1 1 auto;
+}
+
+.box .row.footer {
+  flex: 0 1 40px;
+}
+    body 
+    {
+        background-color: rgb(243, 243, 243);
+      background-color: rgb(7, 7, 7);
+      color:rgb(177, 177, 177);
+      margin-top: 0px;
+      font-family: "Roboto", sans-serif;
+      text-decoration: none;
+      margin: 0px 0px 0px 0px;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch
+    }
+    
+    .roboto-thin 
+    {
+      font-family: "Roboto", sans-serif;
+      font-weight: 100;
+      font-style: normal;
+    }
+
+    .roboto-light 
+    {
+      font-family: "Roboto", sans-serif;
+      font-weight: 300;
+      font-style: normal;
+    }
+
+    .roboto-regular 
+    {
+      font-family: "Roboto", sans-serif;
+      font-family: "Roboto", sans-serif;
+      font-weight: 400;
+      font-style: normal;
+    }
+
+    .roboto-medium 
+    {
+      font-family: "Roboto", sans-serif;
+      font-weight: 500;
+      font-style: normal;
+    }
+
+    .roboto-bold 
+    {
+      font-family: "Roboto", sans-serif;
+      font-weight: 700;
+      font-style: normal;
+    }
+
+    .roboto-black 
+    {
+      font-family: "Roboto", sans-serif;
+      font-weight: 900;
+      font-style: normal;
+    }
+
+    .roboto-thin-italic 
+    {
+      font-family: "Roboto", sans-serif;
+      font-weight: 100;
+      font-style: italic;
+    }
+
+    .roboto-light-italic 
+    {
+      font-family: "Roboto", sans-serif;
+      font-weight: 300;
+      font-style: italic;
+    }
+
+    .roboto-regular-italic 
+    {
+      font-family: "Roboto", sans-serif;
+      font-weight: 400;
+      font-style: italic;
+    }
+
+    .roboto-medium-italic 
+    {
+      font-family: "Roboto", sans-serif;
+      font-weight: 500;
+      font-style: italic;
+    }
+
+    .roboto-bold-italic 
+    {
+      font-family: "Roboto", sans-serif;
+      font-weight: 700;
+      font-style: italic;
+    }
+
+    .roboto-black-italic 
+    {
+      font-family: "Roboto", sans-serif;
+      font-weight: 900;
+      font-style: italic;
+    }
+
+    .grid-container 
+    {
+      display: grid;
+      grid-template-columns: auto auto auto auto auto;
+      padding: 10px  90px;
+      column-gap: 50px;
+      row-gap: 50px;
+    }
+
+    .grid-item 
+    {
+      background-color: rgba(255, 255, 255, 0.8);
+      border: 1px solid rgba(0, 0, 0, 0.8);
+      padding: 20px;
+      font-size: 30px;
+      text-align: center;
+      height: 80px;
+      font-family: "Roboto", sans-serif;
+      font-weight: 700;
+      font-style: normal;
+      display: block;
+    }
+
+    .mainbutton 
+    {
+      font-family: "Roboto", sans-serif;
+      font-weight: 700;
+      font-style: normal;
+      display:inline-block;
+      width:120px;
+      padding:10px;
+      box-sizing:border-box;
+      text-align:center;
+      font-size:16px;
+      margin: 10px;
+      color:rgb(177, 177, 177);
+
+      text-decoration: none;
+      transition: background 0.7s;
+    }
+
+    .mainbutton:hover 
+    {
+      background:rgba(248, 100, 100,20);
+   
+      /* transition:0.7s; */
+      /*width:130px; */
+      cursor:pointer;
+    }
+
+    .p21 
+    {
+      font-size: 30px;
+      font-family: "Roboto", sans-serif;
+      font-weight: 700;
+      font-style: normal;
+      color: rgb(207, 63, 63);
+      float: left;
+      height: 10px;
+      margin-top: 5px;
+    }
+    .p2{
+      color: rgb(207, 63, 63);
+      font-size: 25px;
+      text-align: center;
+    }
+
+    ul 
+    {
+      margin:auto;
+      margin-left:-45px;
+      text-align:center;
+      width:100%;
+    }
+    
+    ul li 
+    {
+      display:inline-block;
+      box-sizing:border-box;
+      text-align:left;
+    }
+    .profile1
+    {
+      border-radius: 50%;
+
+      float:right;
+    }
+
+    .review-profile
+    {
+      border-radius: 50%;
+      float: left;
+      margin-right: 10px;
+
+    }
+    .buttons
+    {
+      max-width: fit-content;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .topmenu
+    {
+      justify-content: space-evenly;
+    }
+
+    .list
+    {
+      float: left;
+      color:rgb(177, 177, 177);
+      font-family: "Roboto", sans-serif;
+      font-weight: 700;
+      font-style: normal;
+      font-size: 30px;
+      color: rgb(177, 177, 177);
+      margin: auto 50px auto;
+    }
+
+    .reviews
+    {
+      float: left;
+      color:rgb(177, 177, 177);
+      font-family: "Roboto", sans-serif;
+      font-weight: 700;
+      font-style: normal;
+      font-size: 30px;
+      color: rgb(177, 177, 177);
+      margin: auto 50px auto;
+      background-color: bisque;
+      width: 600px;
+    }
+
+    .item
+    {
+
+      margin: 20px 70px 20px 0px;
+      width: 360px;
+      height: 270px;
+      padding: 10px;
+      background-color: rgb(10, 10, 10);
+      display:inline-block;
+    }
+
+    .song-item
+    {
+      margin: 20px 70px 20px 0px;
+      width: 200px;
+      height: 270px;
+      padding: 10px;
+      background-color: rgb(10, 10, 10);
+      display:inline-block;
+      transition: transform 0.2s;
+    }
+
+      .song-item:hover
+      {
+        transform: scale(1.1);
+      }
+
+    .review-item
+    {
+
+      margin: 0px 0px 10px 20px;
+      width: 360px;
+      height: 200px;
+      padding: 10px;
+      background-color: rgb(10, 10, 10);
+      text-decoration: none;
+      display:inline-block;
+    }
+
+    .img
+    {
+      width: 360px;
+      height: 202.5px;
+      display: inline-block;
+      position: relative;
+      margin-top: 10px;
+     
+    }
+
+    .song-img
+    {
+      display: inline-block;
+      position: relative;
+      margin-top: 10px;
+    }
+
+    .vInfo
+    {
+      height: 5px;
+      margin-top: 10px;
+      margin-bottom:  10px;
+      font-size: 15px;
+      color: rgb(245, 245, 245);
+
+    }
+
+    div 
+    {
+
+    }
+
+    #overflow 
+    {
+      white-space:nowrap;
+      max-width:15em;
+      overflow:hidden;
+    }
+
+    .hd
+    {
+      text-align: center;
+    }
+
+    .review-profile-name
+    {
+      font-size: 10px;
+      float: left;
+      margin-top: 10px;
+      text-decoration: none;
+    }
+
+    .review-video-title
+    {
+      margin: 40px 10px 10px 10px;
+      width:185px;
+      height: 30px;
+      font-size: 15px;
+      text-decoration: none;
+    }
+    .review-video-content
+    {
+      margin: 10px 10px 10px 10px;
+      width:300px;
+      height: 50px;
+      font-size: 10px;
+      text-decoration: none;
+    }
+    .stars
+    {
+      margin-left: 10px;
+      width:100px;
+      height: 10px;
+      background-color: antiquewhite;
+    }
+    .review-img
+    {
+
+      float: right;
+      margin: 20px 15px 0px 0px;
+    }
+
+   .form {
+
+  border: 0px solid #ccc;
+  border-radius: 5px;
+  margin-right: 10px;
+  width: 300px
+}
+.textA
+{
+  font-family: "Roboto", sans-serif;
+}
+
+input:focus, textarea:focus, select:focus{
+        outline: none;
+    }
+
+    select{
+      border: none;
+      border-color: rgb(255, 145, 0);
+    }
+
+    select:focus {
+    outline:none;
+}
+
+
+  </style>
+<body>
+
+
+
+    
+   
+<header style= "background-color: rgb(7, 7, 7);;" >
+    <nav style = "height: 90px;">
+        <a href="/" class="mainbutton home-buton p2">GoWall</a>
+    
+    
+    <a class="mainbutton button1" href="/videos" >Videos</a>
+        <a class="mainbutton button3" href="/reviews">Reviews</a>
+       <a class = "mainbutton button4" href="/users" >Users</a>
+       <a class = "mainbutton button4" href="/songs" >Songs</a>
+       <a class = "mainbutton button4" href="/movies" >Movies</a>
+       <a class = "mainbutton button4" href="/reviews/new" >New Review</a>
+    
+</nav>
+</header>
+    <%- include('../partials/errorMessage.ejs')%>
+
+
+<!-- <form action ="/videos" method="POST"> -->
     <%- include('_form_fields') %>
-    <a href ="/videos">Cancel</a>
-    <button type="submit">Create</button>
-</form>
+
+    
+</body>
+
+
+</html>

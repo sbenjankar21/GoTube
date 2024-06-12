@@ -49,7 +49,19 @@ const songSchema = new mongoose.Schema({
         type: [mongoose.Schema.Types.ObjectId],
         required: false,
         ref: "Review"
+    },
+    previewURL:
+    {
+        type: String,
+        required: false,
+   
+    },
+    backgroundColor:
+    {
+        type: String,
+        required: false
     }
+
 })
 
 module.exports = mongoose.model('Song', songSchema)

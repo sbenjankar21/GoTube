@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const Movie = require('../models/movie')
+//const Media = require('../models/media')
 const axios = require('axios')
 const Review = require('../models/review')
 const { parse } = require('dotenv')
@@ -13,7 +14,8 @@ async function getMoreData(movie)
   {
     const response = await axios({
       method: "get",
-      url: 'https://www.omdbapi.com/?i='+movie.imdbID+'&apikey=9af09daa',
+
+      url:"https://api.themoviedb.org/3/movie/"+movie.id+"?api_key=e1ebcaed511d642466017433aa7c2ec5&append_to_response=credits,videos"
 
     })
 
@@ -77,7 +79,7 @@ async function getAuth()
 
 router.get('/', checkAuthenticated, async (req,res) =>{
     const movies = await Movie.find()
-  
+    
 
     res.render('movies/index',{
         //users: myUsers
@@ -109,7 +111,8 @@ router.get('/new', checkAuthenticated, async (req,res) =>{
    // const myUsers = await User.find()
    //console.log(getAuth()) //------------------
     res.render('movies/new',{
-        token: spotify_token
+        token: spotify_token,
+        layout: false
     })
 })
 
@@ -137,17 +140,20 @@ router.post('/', checkAuthenticated, async (req,res) =>{
   //console.log(rating)
   console.log(movieMD)
   try{
-    var movies = await Movie.find({imdbID: movie.imdbID})
+    var movies = await Movie.find({tmdbID: movieMD.id})
     const newMovie = new Movie(
       {
-          title: movie.Title,
-          imdbID: movie.imdbID,
-          director: movieMD.Director,
+          title: movieMD.title,
+          tmdbID: movieMD.id,
+          director: movieMD.credits.crew.filter((member) => member.job == "Director")[0].name,
           totalStars: 5,
           stars: parseInt(rating),
           datePosted: Date.now(),
-          imageAddress: movie.Poster,
-          averageStars: (parseInt(rating)/5* 5).toFixed(2)
+          imageAddress: movieMD.poster_path,
+          averageStars: (parseInt(rating)/5* 5).toFixed(2),
+          backdrop: movieMD.backdrop_path,
+          releaseDate: movieMD.release_date,
+          trailerYoutube: movieMD.videos.results.filter((result) => result.type == "Trailer")[0].key
       })
     if(movies.length === 0)
       {
@@ -204,16 +210,16 @@ router.post('/', checkAuthenticated, async (req,res) =>{
             
             let temp = 5;
             let increasing = parseInt(rating)
-            let thisVid = await Movie.findOne({imdbId: movie.imdbID})
+            let thisVid = await Movie.findOne({tmdbID: movieMD.id})
             let newStars = thisVid.stars + increasing;
             let newTotalStars = thisVid.totalStars + 5;
             let newAverageStars = (newStars/newTotalStars* 5).toFixed(2) 
-            await Song.updateOne({imdbId: movie.imdbId}, {$set:{stars:  newStars, totalStars: newTotalStars, averageStars: newAverageStars}})
-            let findTheMovie = await Movie.findOne({imdbId: movie.imdbID})
+            await Movie.updateOne({tmdbID: movieMD.id}, {$set:{stars:  newStars, totalStars: newTotalStars, averageStars: newAverageStars}})
+            var findTheMovie = await Movie.findOne({tmdbID: movieMD.id})
               console.log("updated!!!")
               try
               {
-                res.redirect(`movies/${findTheMove.id}`)
+                res.redirect(`movies/${findTheMovie.id}`)
               
                 // res.render('index',{
                 //     song: songs[0],
@@ -252,7 +258,7 @@ router.post('/', checkAuthenticated, async (req,res) =>{
 router.get('/:id',checkAuthenticated, async (req, res) => {
   try {
       const movie = await Movie.findById(req.params.id)
-      const reviews = await Review.find({movie: movie}).populate("movie")
+    const reviews = await Review.find({movie: movie}).populate(["movie", "user"])
 
       //const books = await Book.find({ video: video.id }).limit(6).exec()
       res.render('movies/view', {

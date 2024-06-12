@@ -8,7 +8,7 @@ const movieSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    imdbID:
+    tmdbID:
     {
         type: String,
         required: true
@@ -49,7 +49,28 @@ const movieSchema = new mongoose.Schema({
         type: [mongoose.Schema.Types.ObjectId],
         required: false,
         ref: "Review"
+    },
+    backgroundColor:
+    {
+        type: String,
+        required: false
+    },
+    backdrop:
+    {
+        type: String,
+        required: false
+    },
+    releaseDate:
+    {
+        type: String,
+        required: true
+    },
+    trailerYoutube:
+    {
+        type: String,
+        required: false
     }
+
 })
 
 module.exports = mongoose.model('Movie', movieSchema)

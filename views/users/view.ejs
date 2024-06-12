@@ -1,94 +1,387 @@
-<% /* %>
-<!-- <p> <%= video.title%></p>
-<p> Ratings count: <%= video.totalStars/5%></p>
-<p> Stars: <%= video.stars%> / <%= video.totalStars%></p>
-<p> Average rating: <%= video.averageStars%> stars</p>
-<p> Date posted <%= video.datePosted%></p>
- <a href = "<%= video.link%>" target="_blank">
-    <div class = "item">
-      <img class = "img" src="<%=video.imageAddress%>" alt="Lamp" width="50">
-      <p class = "vInfo" id = "overflo"> <%= video.title%><br> <%= video.author%></p>
-    </div>
-</a>  -->
 
 
-<div class = "item">
-  <img class = "img" src="<%=review.video.imageAddress%>" alt="Lamp" width="50">
-  <p class = "vInfo" id = "overflo"> <%= review.content%><br> </p>
-</div>
-<p><%=review.rating%> </p>
+<style>
 
-<% */ %>
-
-<h1><%=user.username%> </h1>
-<script>
-  import User from '../models/user'
-function friend()
-{
-  const friended = false;
-  if(!friended)
-  {
-
-friended = true;
-console.log(User.find().populate("friends"))
-  }
-
+/* body {
+    animation: fadeInAnimation ease 3s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
 }
-</script>
-<% reviews.forEach(review => { %>
-  <!-- <a href = "/reviews/<%=review.id%>"><div><%=review.title%></div></a> -->
-  <!-- <a href = "<%= review.link%>" target="_blank"> -->
-  <a href = "/reviews/<%=review.id%>" target="_blank">
-      <!-- <div class = "item">
-        <img class = "img" src="<%=review.video.imageAddress%>" alt="Lamp" width="50">
-        <p class = "vInfo" id = "overflo"> <%= review.content%><br> <%= review.rating%> stars</p>
-      </div> -->
+@keyframes fadeInAnimation {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+ */
 
-      <div class = "review-item">
-        <img class = "review-profile" src = "https://lh3.googleusercontent.com/ogw/AF2bZyg8LME8PkRUVpKynXcvMylz-as6u7bm4mtFxsfhKUFWzg=s32-c-mo" alt="">
-        
-        <p class="review-profile-name"> <%=review.user.username%></p>
-        <img class = "review-img" src="<%=review.video.imageAddress%>" alt="Lamp" width="130">
-        <p class="review-video-title"> <%=review.video.title%></p>
-       
-        <div class = "stars">
-          <%=review.rating%>
-        </div>
-        <p class="review-video-content"> <%=review.content%></p>
-      </div>
+#overview-container
+{    animation: fadeInAnimation ease 3s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+
+   background-color: rgb(54, 54, 54); /*ignore */
+   display:flex
+
+   
+}
+
+@keyframes fadeInAnimation {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+.video-div
+{
+  /* float: left; */
+  padding-left: 90px;
+  padding-top: 50px;
+  width: 20%;
+}
+.reviews-div
+{
+  /* float: left; */
+   /* display: flex;  */
+  flex-grow: 1;
+  justify-content: center;
+}
+
+.review-item-page
+    {
+
+      /* margin: auto; */
+      margin: 25px auto 0px auto;
+      display:block; 
+      width: 75%;
+      height: 270px;
+      padding: 10px;
+      background-color: rgb(10, 10, 10);
+      /* margin-top: 10px; */
+      /* transition: background-color 0.2s; */
+      transition: transform 0.2s;
+    }
+
+
+
+ 
+   .review-item-page:hover
+    {
+      transform: scale(1.1);
+      /* background-color: rgb(0, 90, 0); */
+
+    }
+
+
+
+
+
+
+
+    .review-username
+    {
+      font-size: 20px;
+      float: left;
+      margin-top: 10px;
+      text-decoration: none;
+      color: white;
+    }
+
+    .review-profile-image
+    {
+      border-radius: 50%;
+      float: left;
+      margin-left: 30px;
+      margin-right: 15px;
+      width: 50px;
+    }
+    .name-profile-holder
+    {
+      margin-top: 20px;
+      width: 100%;
+      height: 55px;
+    }
+
+    .star-containera
+    {
+      padding-left: 25px;
+    }
+    .star-one{
+      /* float: left; */
+    }
+    .review-content
+    {
+      margin-left: 30px;
+    }
+
+    .average-stars-container
+    {
+      /* display: inline; */
+      display: flex;
+      height: 50px;
+      
+    }
+
+    .average-star-amount
+    {
+      margin-right: 10px;
+      color: white;
+    }
+    .average-star-total
+    {
+      margin-left: 10px;
+      color: white;
+    }
+
+    .star-svg
+    {
+
+    }
+    .favorite-song-holder
+    {
+      margin: 0px auto 0px auto;
+      display: flex;
+      justify-content: center;
+      margin-bottom: 50px;
+      width: 80%;
+    }
+
+    .favorite-movie-holder
+    {
+      margin: 0px auto 0px auto;
+      display: flex;
+      justify-content: center;
+      margin-bottom: 50px;
+      width: 80%;
+    }
+
+    .favorite-video-holder
+    {
+      margin: 0px auto 0px auto;
+      display: flex;
+      justify-content: center;
+      margin-bottom: 50px;
+      width: 80%;
+    }
+
+
+    /* .favorite-song-item
+    {
+      margin: auto auto;
+      background-color: rgb(176, 72, 128);
+    } */
+
+
+    .favorite-song-item
+    {
+      margin: auto auto;
+      width: 200px;
+      height: 270px;
+      padding: 10px;
+      background-color: rgb(10, 10, 10);
+      display:inline-block;
+      transition: transform 0.2s;
+    }
+
+    .favorite-movie-item
+    {
+      margin: auto auto;
+      width: 200px;
+ 
+      padding: 10px;
+      background-color: rgb(10, 10, 10);
+      display:inline-block;
+      transition: transform 0.2s;
+    }
+a
+
+      .favorite-song-item:hover
+      {
+        transform: scale(1.1);
+      }
+
+      /* .song-img
+    {
+      display: inline-block;
+      position: relative;
+      margin-top: 10px;
+    }
+
+    .vInfo
+    {
+      height: 5px;
+      margin-top: 10px;
+      margin-bottom:  10px;
+      font-size: 15px;
+      color: rgb(245, 245, 245);
+
+    } */
+</style>
+
+
+<div id="overview-container">
+
+<div class="video-div">
+
+ <img style="margin: 0px auto 0px auto; display: block;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAPFBMVEXk5ueutLepsLPo6uursbXJzc/p6+zj5ea2u76orrKvtbi0ubzZ3N3O0dPAxcfg4uPMz9HU19i8wcPDx8qKXtGiAAAFTElEQVR4nO2d3XqzIAyAhUD916L3f6+f1m7tVvtNINFg8x5tZ32fQAIoMcsEQRAEQRAEQRAEQRAEQRAEQRAEQRAEQRAEQRAEQTghAJD1jWtnXJPP/54IgNzZQulSmxvTH6oYXX4WS+ivhTbqBa1r26cvCdCu6i0YXbdZ0o4A1rzV+5IcE3YE+z58T45lqo7g1Aa/JY5tgoqQF3qb382x7lNzBLcxft+O17QUYfQI4IIeklKsPSN4i6LKj/7Zm8n99RbHJpEw9gEBXNBpKIYLJqKYRwjOikf//r+J8ZsVuacbqCMNleI9TqGLGqMzhnVdBOdd6F/RlrFijiCoVMk320CBIahUxTWI0KKEcJqKbMdpdJb5QvdHq6wCI5qhKlgGMS/RBHkubWDAE+QZxB4xhCyDiDkLZxgGEVdQldzSKbTIhmZkFkSEPcVvmBn2SMuZB9od7fQDsMiDdKJjFUSCQarM5WirZ3C2TT/htYnyPcPfgrFHWz0BI74gr6J/IZiGUxAZGQLqmvQLTrtE/Go4YxhVRIpEw+sww1IIcqr5NKmUUzLF3d4/qPkYIp2T/obPuemlojFUR4t9Q2Vojhb7BmgElWHzLPH8hucfpefPNFTVgs9h1AdU/Pin96vwWbWdf+X9Absn3OdO34aMdsDnP8WgKYisTqI6CkNGqZQo1XA6Ef6AU32SJzOcBukHPF07/xNSgmHKa5BOhtezv6mA/rYJpwXNAnbRZ1XuF3BzDcO3vpA3+ny2909gbqE4hhD3LIPhLLyBNhPZvbZ3B+3tPYa18A7auSlXQayKwTPNLKDcuOB0xPYKDPFTkWsevQPRZ1J8Hji9I1KQ34r7hZhrwNwOZ97QxNx0drwn4QI0wQk1DcEsfKCWKdxVvxPSNUIp/knmAXT+nT+Ko3+0H96rcNb3m1fx7MBTJdeBJ7uFcWsc0wvgAsC4pROW0l2inbAmIBv/7GZmuhQH6API2rr8T0e6yuZJ+80A9LZeG62T3tik31XwxtwZcizKuTHkMjB1WdZde4Kmic/A5ZI3rr1ae21d08PlVHYfAaxw9G9CYRbJ+8ZdbTcMRV1XM3VdF0M32vtoTdZ0+u29s0OttJ5bz64UwinjaFMVY9vkqc3KKSxN21Xl+0L4Q3Vuv1tYl0pqnX6ms4XetFz7gdZVAgUEoJntfOUe4ZwsHd9FzqQ3Vv6xe41l0XJcqcKl6TZvlv7ClAW3BsqQW4X7ypApB8dmTgK4IX5wvqIVj33HtD2qSG4BqznxdIefL27Y4sahi0MdIdvUsDva8agGGbCtITmCY31MHD2O0uIdh/0rJDQ1VX5Zdxz3rR2QDbv6qXl9vudzqQtGm1Jv9LDXOsfvvB7VcZ8PDKD0mQ1VHPYQ9O+Yj4hR1IUD8rBnn3ho2m8oQMxbCFiKlL2ioSW5heeJqegED52CzxCtcGD3Kv8Wms9EYLyUhwaFIhSMBClevWEmiK/Iaogu4H7sg6ppQhQG8RUqivuTGOAJOg6FfgW0q0M0PQMRMEgXaeNf3SYDZ8PIMI0+wHgr/MgN7wYwpiLjCCqM6ydUDZLQiB6nDdNC8SDyig3jPPpFXGcC9O8BUBDVmgBY59E7Md/35Loe/UVEECEJwYggJjELZ4J71SaQSBeC02n4Da29CayJNA28SAhd2CQyC1Xw6pSmGSINQVuMhAZp4DClan9MgmkDDNmezqwS8sgtlXK/EPBhoaSmYVC/F7IO1jQEdHOlabpKh3+jzLQSTUiq4X2I+Ip/zU8rlaqAvkS21ElR+gqu3zbjjL+hIAiCIAiCIAiCIAiCsCf/AKrfVhSbvA+DAAAAAElFTkSuQmCC">
+
+  
+  <p style="color: white; font-size: 30px; margin: 15px  0px; text-align: center;"> <%= user.username%></p>
+
+  
+
+<br>
+<hr>
+
+
+
+  
+</div>
+
+
+
+<div class="reviews-div">
+
+  <h1 style="text-align: center; color: white;">Favorite Songs</h1>
+  <div class="favorite-song-holder"> 
+
+    <a class="favorite-song-item" href = "/songs/9999">
+        <img class = "song-img" src="https://i.scdn.co/image/ab67616d0000b27326f7f19c7f0381e56156c94a" alt="Lamp" width="200px">
+        <p class = "vInfo" id = "overflo"> <span style ="font-size: 20px; ">Flashing Lights</span><br> <span style="font-size: 12.5px; color:rgb(170, 170, 170)">Tyler, The Creator</span></p>
   </a> 
-<% }) %>
 
-<% if (!user._id.equals(sesUser._id)) { %>
-  <!-- Code to be executed if the condition is true -->
+  <a class="favorite-song-item" href = "/songs/9999">
+    <img class = "song-img" src="https://i.scdn.co/image/ab67616d0000b27326f7f19c7f0381e56156c94a" alt="Lamp" width="200px">
+    <p class = "vInfo" id = "overflo"> <span style ="font-size: 20px; ">Flashing Lights</span><br> <span style="font-size: 12.5px; color:rgb(170, 170, 170)">Tyler, The Creator</span></p>
+</a> 
+<a class="favorite-song-item" href = "/songs/9999">
+  <img class = "song-img" src="https://i.scdn.co/image/ab67616d0000b27326f7f19c7f0381e56156c94a" alt="Lamp" width="200px">
+  <p class = "vInfo" id = "overflo"> <span style ="font-size: 20px; ">Flashing Lights</span><br> <span style="font-size: 12.5px; color:rgb(170, 170, 170)">Tyler, The Creator</span></p>
+</a> 
+<a class="favorite-song-item" href = "/songs/9999">
+  <img class = "song-img" src="https://i.scdn.co/image/ab67616d0000b27326f7f19c7f0381e56156c94a" alt="Lamp" width="200px">
+  <p class = "vInfo" id = "overflo"> <span style ="font-size: 20px; ">Flashing Lights</span><br> <span style="font-size: 12.5px; color:rgb(170, 170, 170)">Tyler, The Creator</span></p>
+</a> 
 
-<form action ="/users/<%=user._id%>" method="POST">
-
-  <button type="submit">Friend</button>
-</form>
-
-<% } else { %>
-  <!-- Code to be executed if the condition is false -->
-<% } %>
+<a class="favorite-song-item" href = "/songs/9999">
+  <img class = "song-img" src="https://i.scdn.co/image/ab67616d0000b27326f7f19c7f0381e56156c94a" alt="Lamp" width="200px">
+  <p class = "vInfo" id = "overflo"> <span style ="font-size: 20px; ">Flashing Lights</span><br> <span style="font-size: 12.5px; color:rgb(170, 170, 170)">Tyler, The Creator</span></p>
+</a> 
+ 
 
 
 
+</div>
+
+  <h1 style="text-align: center; color: white;">Favorite Movies</h1>
+  <div class="favorite-movie-holder"> 
+
+    <a class="favorite-movie-item" href = "/songs/9999">
+        <img class = "song-img" src="https://image.tmdb.org/t/p/original/4oD6VEccFkorEBTEDXtpLAaz0Rl.jpg" alt="Lamp" width="200px">
+       
+  </a> 
+  <a class="favorite-movie-item" href = "/songs/9999">
+    <img class = "song-img" src="https://image.tmdb.org/t/p/original/4oD6VEccFkorEBTEDXtpLAaz0Rl.jpg" alt="Lamp" width="200px">
+   
+</a> 
+<a class="favorite-movie-item" href = "/songs/9999">
+  <img class = "song-img" src="https://image.tmdb.org/t/p/original/4oD6VEccFkorEBTEDXtpLAaz0Rl.jpg" alt="Lamp" width="200px">
+ 
+</a> 
+<a class="favorite-movie-item" href = "/songs/9999">
+  <img class = "song-img" src="https://image.tmdb.org/t/p/original/4oD6VEccFkorEBTEDXtpLAaz0Rl.jpg" alt="Lamp" width="200px">
+ 
+</a> 
+<a class="favorite-movie-item" href = "/songs/9999">
+  <img class = "song-img" src="https://image.tmdb.org/t/p/original/4oD6VEccFkorEBTEDXtpLAaz0Rl.jpg" alt="Lamp" width="200px">
+ 
+</a> 
 
 
-<br>
-<h1>Friends</h1>
-<% user.friends.forEach(friend => { %>
-  <a href="/users/<%=friend.id%>"> <%=friend.username%></a>
-  <br>
 
-<% }) %>
 
-<br>
-<h1>Likes</h1>
-<% user.likedVideos.forEach(video => { %>
-  <a href = "/videos/<%=video.id%>" target="_blank">
-    <div class = "item">
-      <img class = "img" src="<%=video.imageAddress%>" alt="Lamp" width="50">
-      <p class = "vInfo" id = "overflo"> <span style ="font-size: 20px; "><%= video.title%></span><br> <span style="font-size: 12.5px; color:rgb(170, 170, 170)"><%= video.author%></span></p>
-    </div>
-<% }) %>
+
+
+</div>
+
+<h1 style="text-align: center; color: white;">Favorite Videos</h1>  
+<div class="favorite-video-holder"> 
+
+  <a class="favorite-movie-item" href = "/songs/9999">
+      <img class = "song-img" src="https://i.ytimg.com/vi/fOX7gOlb8xM/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDLkI0k5q2I1eUUYX688fb16Qtv1g" alt="Lamp" width="200px">
+     
+</a> 
+
+<a class="favorite-movie-item" href = "/songs/9999">
+  <img class = "song-img" src="https://i.ytimg.com/vi/fOX7gOlb8xM/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDLkI0k5q2I1eUUYX688fb16Qtv1g" alt="Lamp" width="200px">
+ 
+</a> 
+
+<a class="favorite-movie-item" href = "/songs/9999">
+  <img class = "song-img" src="https://i.ytimg.com/vi/fOX7gOlb8xM/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDLkI0k5q2I1eUUYX688fb16Qtv1g" alt="Lamp" width="200px">
+ 
+</a> 
+
+<a class="favorite-movie-item" href = "/songs/9999">
+  <img class = "song-img" src="https://i.ytimg.com/vi/fOX7gOlb8xM/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDLkI0k5q2I1eUUYX688fb16Qtv1g" alt="Lamp" width="200px">
+ 
+</a> 
+
+<a class="favorite-movie-item" href = "/songs/9999">
+  <img class = "song-img" src="https://i.ytimg.com/vi/fOX7gOlb8xM/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDLkI0k5q2I1eUUYX688fb16Qtv1g" alt="Lamp" width="200px">
+ 
+</a> 
+
+
+
+
+</div>
+
+
+
+  <% reviews.forEach(review => { %>
+    <!-- <a href = "/reviews/<%=review.id%>"><div><%=review.title%></div></a> -->
+    <!-- <a href = "<%= review.link%>" target="_blank"> -->
+    <a href = "/reviews/<%=review.id%>" target="_blank" class="review-item-page">
+        <div class = "name-profile-holder">
+        
+          <img class = "review-profile-image" src = "https://lh3.googleusercontent.com/ogw/AF2bZyg8LME8PkRUVpKynXcvMylz-as6u7bm4mtFxsfhKUFWzg=s32-c-mo" alt="">
+          <p class="review-username"><%= review.user.username%></p>
+        </div>
+       
+        <div class="star-containera"> 
+          <%for(var i = 0; i < review.rating; i++)  {%>
+          <img class="star-one" src="/star.svg" width="35px">
+
+          <% } %>
+          
+          <%for(var t = i; t < 5; t++)  {%>
+            <img class="star-one" src="/empty.svg" width="35px">
+  
+            <% } %>
+        
+        </div>
+          <p class = "review-content" id = "overflo"> <%= review.content%><br> <%= review.rating%> stars</p>
+        
+    </a> 
+  <% }) %>
+</div>
+
+
+
+
+
+
+</div>
+
+
+<script>
+//   window.setInterval(function() {
+//   // Take the first character, and make it the last character
+//   document.title = document.title.substring(1) + document.title[0];
+// }, 500);
+</script>

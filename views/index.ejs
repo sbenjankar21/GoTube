@@ -50,3 +50,33 @@
   <form action="/logout?_method=DELETE" method = "POST">
     <button type="submit">Log Out</button>
   </form>
+
+  
+  <div id="embed-iframe"></div>
+  <!-- <script src="https://open.spotify.com/embed/iframe-api/v1" async>
+  </script>
+  <script type="text/javascript">
+    window.onSpotifyIframeApiReady = (IFrameAPI) => {
+      const element = document.getElementById('embed-iframe');
+      const options = {
+        width: '100%',
+        height: '160',
+        uri: 'spotify:episode:7makk4oTQel546B0PZlDM5'
+      };
+
+      const callback = async (EmbedController) => {
+          //EmbedController.pause()
+          await EmbedController.seek(200);
+          await EmbedController.play();
+      };
+      IFrameAPI.createController(element, options, callback);
+      
+    };
+    
+  </script> -->
+<!-- 
+  <script>
+document.querySelector('[title="Play"]').click()
+  </script>
+  <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/5WI2ltQIdwgzf1SNE76JyR?utm_source=generator&autoplay=1" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+   -->

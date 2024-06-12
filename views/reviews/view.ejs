@@ -1,31 +1,377 @@
-<% /* %>
-<!-- <p> <%= video.title%></p>
-<p> Ratings count: <%= video.totalStars/5%></p>
-<p> Stars: <%= video.stars%> / <%= video.totalStars%></p>
-<p> Average rating: <%= video.averageStars%> stars</p>
-<p> Date posted <%= video.datePosted%></p>
- <a href = "<%= video.link%>" target="_blank">
-    <div class = "item">
-      <img class = "img" src="<%=video.imageAddress%>" alt="Lamp" width="50">
-      <p class = "vInfo" id = "overflo"> <%= video.title%><br> <%= video.author%></p>
-    </div>
-</a>  -->
-<% */ %>
 
-<% try { %>
-  <% review.video.title %>
-<div class = "item">
-  <img class = "img" src="<%=review.video.imageAddress%>" alt="Lamp" width="50">
-  <p class = "vInfo" id = "overflo"> <%= review.content%><br> </p>
-</div>
-<p><%=review.rating%> </p>
 
-<% } catch { %>
+<style>
 
-  <div class = "item">
-    <img class = "img" src="<%=review.song.imageAddress%>" alt="Lamp" width="50">
-    <p class = "vInfo" id = "overflo"> <%= review.content%><br> </p>
+/* body {
+    animation: fadeInAnimation ease 3s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+}
+@keyframes fadeInAnimation {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+ */
+
+#overview-container
+{    animation: fadeInAnimation ease 3s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+
+   background-color: rgb(<%= video.backgroundColor%>); /*ignore */
+   display:flex
+
+   
+}
+
+@keyframes fadeInAnimation {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+.video-div
+{
+  /* float: left; */
+  padding-left: 90px;
+  padding-top: 50px;
+}
+.reviews-div
+{
+  /* float: left; */
+   /* display: flex;  */
+  flex-grow: 1;
+  justify-content: center;
+}
+
+.review-item-page
+    {
+
+      /* margin: auto; */
+      margin: 25px auto 0px auto;
+      display:block; 
+      width: 75%;
+      height: 270px;
+      padding: 10px;
+      background-color: rgb(10, 10, 10);
+      /* margin-top: 10px; */
+      /* transition: background-color 0.2s; */
+      transition: transform 0.2s;
+    }
+
+
+
+ 
+   .review-item-page:hover
+    {
+      transform: scale(1.1);
+      /* background-color: rgb(0, 90, 0); */
+
+    }
+
+
+
+
+
+
+
+    .review-username
+    {
+      font-size: 20px;
+      float: left;
+      margin-top: 10px;
+      text-decoration: none;
+      color: white;
+    }
+
+    .review-profile-image
+    {
+      border-radius: 50%;
+      float: left;
+      margin-left: 30px;
+      margin-right: 15px;
+      width: 50px;
+    }
+    .name-profile-holder
+    {
+      margin-top: 20px;
+      width: 100%;
+      height: 55px;
+    }
+
+    .star-containera
+    {
+      padding-left: 25px;
+    }
+    .star-one{
+      /* float: left; */
+    }
+    .review-content
+    {
+      margin-left: 30px;
+    }
+
+    .average-stars-container
+    {
+      /* display: inline; */
+      display: flex;
+      height: 50px;
+      
+    }
+
+    .average-star-amount
+    {
+      margin-right: 10px;
+      color: white;
+    }
+    .average-star-total
+    {
+      margin-left: 10px;
+      color: white;
+    }
+
+    .star-svg
+    {
+
+    }
+</style>
+
+
+<div id="overview-container">
+
+<div class="video-div">
+
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/<%=video.youtubeId%>?si=zFv2_59A4Zgvz29U&autoplay=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <!-- <img  src="<%=video.imageAddress%>" alt="Lamp" width="500px"> -->
+
+  <p style="color: white; font-size: 30px; margin: 15px  0px;"> <%= video.title%></p>
+  <p style="color: rgb(173, 173, 173); font-size: 18.75px"> <%= video.author%></p>
+  
+
+  <div class="average-stars-container">
+    <p class="average-star-amount"> <%= video.averageStars.toFixed(1)%> </p>
+    <% if(video.averageStars === 5.0) { %>
+      
+      <img class="star-one" src="/star.svg" width="50px">
+      <img class="star-one" src="/star.svg" width="50px">
+      <img class="star-one" src="/star.svg" width="50px">
+      <img class="star-one" src="/star.svg" width="50px">
+      <img class="star-one" src="/star.svg" width="50px">
+     
+
+      <% } else if(video.averageStars >= 4.3) {%>
+        <img class="star-one" src="/star.svg" width="50px">
+        <img class="star-one" src="/star.svg" width="50px">
+        <img class="star-one" src="/star.svg" width="50px">
+        <img class="star-one" src="/star.svg" width="50px">
+        <img class="star-one" src="/star-half.svg" width="50px">
+
+      <% } else if(video.averageStars >= 3.8) {%>
+        <img class="star-one" src="/star.svg" width="50px">
+        <img class="star-one" src="/star.svg" width="50px">
+        <img class="star-one" src="/star.svg" width="50px">
+        <img class="star-one" src="/star.svg" width="50px">
+        <img class="star-one" src="/empty.svg" width="50px">
+      
+      
+      <% } else if(video.averageStars >= 3.3) {%>
+        <img class="star-one" src="/star.svg" width="50px">
+        <img class="star-one" src="/star.svg" width="50px">
+        <img class="star-one" src="/star.svg" width="50px">
+        <img class="star-one" src="/star-half.svg" width="50px">
+        <img class="star-one" src="/empty.svg" width="50px">
+
+        <% } else if(video.averageStars >= 2.8) {%>
+          <img class="star-one" src="/star.svg" width="50px">
+          <img class="star-one" src="/star.svg" width="50px">
+          <img class="star-one" src="/star.svg" width="50px">
+          <img class="star-one" src="/empty.svg" width="50px">
+          <img class="star-one" src="/empty.svg" width="50px">
+          <% } else if(video.averageStars >= 2.3) {%>
+            <img class="star-one" src="/star.svg" width="50px">
+            <img class="star-one" src="/star.svg" width="50px">
+            <img class="star-one" src="/star-half.svg" width="50px">
+            <img class="star-one" src="/empty.svg" width="50px">
+            <img class="star-one" src="/empty.svg" width="50px">
+            <% } else if(video.averageStars >= 1.8) {%>
+              <img class="star-one" src="/star.svg" width="50px">
+              <img class="star-one" src="/star.svg" width="50px">
+              <img class="star-one" src="/empty.svg" width="50px">
+              <img class="star-one" src="/empty.svg" width="50px">
+              <img class="star-one" src="/empty.svg" width="50px">
+              <% } else if(video.averageStars >= 1.3) {%>
+                <img class="star-one" src="/star.svg" width="50px">
+                <img class="star-one" src="/star-half.svg" width="50px">
+                <img class="star-one" src="/empty.svg" width="50px">
+                <img class="star-one" src="/empty.svg" width="50px">
+                <img class="star-one" src="/empty.svg" width="50px">
+                <% } else if(video.averageStars >= 0.8) {%>
+                  <img class="star-one" src="/star.svg" width="50px">
+                  <img class="star-one" src="/empty.svg" width="50px">
+                  <img class="star-one" src="/empty.svg" width="50px">
+                  <img class="star-one" src="/empty.svg" width="50px">
+                  <img class="star-one" src="/empty.svg" width="50px">
+                  <% } %>
+        <p class="average-star-total"> (<%= video.totalStars/5%>) </p>
   </div>
-  <p><%=review.rating%> </p>
 
-<%  }%>
+<br>
+<hr>
+
+<h1 style="color: white;">Info</h1>
+  <p> Ratings count: <%= video.totalStars/5%></p>
+  <p> Stars: <%= video.stars%> / <%= video.totalStars%></p>
+  <p> Average rating: <%= video.averageStars%> stars</p>
+  <p> Date posted <%= video.datePosted%></p>
+
+  
+   <a href = "https://open.spotify.com/track/<%= video.spotifyId%>" target="_blank">
+      <div class = "item">
+        <img class = "img" src="<%=video.imageAddress%>" alt="Lamp" width="50">
+        <p class = "vInfo" id = "overflo"> <%= video.title%><br> <%= video.author%></p>
+      </div>
+  </a> 
+  
+
+
+
+
+
+  
+  <form action ="/videos/<%=video.id%>/new-like" method="POST">
+  
+    <button type="submit">Like</button>
+  </form>
+  
+</div>
+
+
+
+<div class="reviews-div">
+  <% reviews.forEach(review => { %>
+    <!-- <a href = "/reviews/<%=review.id%>"><div><%=review.title%></div></a> -->
+    <!-- <a href = "<%= review.link%>" target="_blank"> -->
+    <a href = "/reviews/<%=review.id%>" target="_blank" class="review-item-page">
+        <div class = "name-profile-holder">
+        
+          <img class = "review-profile-image" src = "https://lh3.googleusercontent.com/ogw/AF2bZyg8LME8PkRUVpKynXcvMylz-as6u7bm4mtFxsfhKUFWzg=s32-c-mo" alt="">
+          <p class="review-username"><%= review.user.username%></p>
+        </div>
+       
+        <div class="star-containera"> 
+          <%for(var i = 0; i < review.rating; i++)  {%>
+          <img class="star-one" src="/star.svg" width="35px">
+
+          <% } %>
+          
+          <%for(var t = i; t < 5; t++)  {%>
+            <img class="star-one" src="/empty.svg" width="35px">
+  
+            <% } %>
+        
+        </div>
+          <p class = "review-content" id = "overflo"> <%= review.content%><br> <%= review.rating%> stars</p>
+        
+    </a> 
+  <% }) %>
+</div>
+
+
+
+
+
+
+</div>
+
+
+
+<!-- <embed src="<%=video.previewURL%>" loop="true" autostart="true" width="2"
+height="0"> -->
+<!-- <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/5WI2ltQIdwgzf1SNE76JyR?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe> -->
+<!-- <script>
+
+var audio = new Audio("<%=video.previewURL%>");
+audio.play();
+
+
+</script> -->
+
+
+
+
+
+<!-- 
+<audio id="myAudio" autoplay>
+  <source src="<%=video.previewURL%>">
+  
+  Your browser does not support the audio element.
+</audio>
+<script>
+  function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+let audio = document.getElementById("myAudio");
+audio.play()
+audio.volume = 0.0
+
+  function getSoundAndFadeAudio (audiosnippetId) {
+
+var sound = document.getElementById(audiosnippetId);
+
+// Set the point in playback that fadeout begins. This is for a 2 second fade out.
+
+  var fadePoint = sound.duration - 3; 
+var fadeBegin = 4;
+
+var fadeFull = false;
+var fadeAudio = setInterval(async function () {
+
+  console.log("Current time:" + sound.currentTime + ", Fade Point: " + fadePoint +", Volume: " + sound.volume)
+    // Only fade if past the fade out point or not at zero already
+
+
+    if ((sound.currentTime <= fadeBegin) && (sound.volume <= 0.5)) {
+     // console.log("HELLOSS")
+        sound.volume += 0.005;
+    }
+
+    else
+    {
+      fadeFull = true;
+    }
+
+
+if(fadeFull)
+{
+
+    if ((sound.currentTime >= fadePoint) && (sound.volume != 0.0)) {
+      //console.log("HELLOSS")
+      try{
+        sound.volume -= 0.01;
+      }
+      catch(e)
+      {
+        console.log(e)
+        sound.volume = 0.0;
+      }
+    }
+
+    // When volume at zero stop all the intervalling
+    if (sound.volume <= 0.0) {
+        clearInterval(fadeAudio);
+    }
+}
+}, 200);
+
+}
+audio.onloadedmetadata = function() {
+getSoundAndFadeAudio("myAudio")
+};
+</script> -->

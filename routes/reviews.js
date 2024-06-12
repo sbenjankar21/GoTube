@@ -48,7 +48,7 @@ router.get('/',  checkAuthenticated, async (req, res) => {
     try
     {
         //const reviews = await Review.find(searchOptions).collation({locale: "en" }).sort(sortOptions)
-        const reviews = await Review.find().populate([ 'video', 'user' ,'song'])
+        const reviews = await Review.find().populate([ 'video', 'user' ,'song', 'movie'])
       
         console.log("heeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeppposdf")
         console.log(reviews)
@@ -71,18 +71,18 @@ router.get('/',  checkAuthenticated, async (req, res) => {
 
 // new author route
 router.get('/new', checkAuthenticated, (req, res) => {
-  res.send('New book')
+  res.render('reviews/new')
 })
 
 // create authro router
 router.post('/', checkAuthenticated,async (req, res) => {
-    res.send('Create books')
+    res.render('Create books')
 })
 // new view
 router.get('/:id', checkAuthenticated,async (req, res) => {
     try 
     {
-        const review = await Review.findById(req.params.id).populate([ 'video', 'user' ,'song'])
+        const review = await Review.findById(req.params.id).populate([ 'video', 'user' ,'song', 'movie'])
         //const books = await Book.find({ video: video.id }).limit(6).exec()
         res.render('reviews/view', {
             review: review
@@ -96,4 +96,7 @@ router.get('/:id', checkAuthenticated,async (req, res) => {
         console.log("uhh")
     }
 })
+
+
+
 module.exports = router
