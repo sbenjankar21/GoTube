@@ -7,7 +7,7 @@ if(process.env.NODE_ENV !== 'production')
 
 
     
-  
+const cookieParser = require("cookie-parser");
 const express = require('express')
 const axios = require('axios')
 const app = express()
@@ -21,9 +21,9 @@ const methodOverride = require('method-override')
 initializePassport(passport, email =>  User.findOne({email: email}),  id =>  User.findById(id)
 )
 
-app.use(express.cookieParser('your secret option here'));
-app.use(express.session());
-
+// app.use(express.cookieParser('your secret option here'));
+// app.use(express.session());
+app.use(cookieParser());
 
 const indexRouter = require('./routes/index')
 const videoRouter  = require('./routes/videos')
