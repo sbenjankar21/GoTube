@@ -18,7 +18,8 @@ function checkAuthenticated(req, res, next)
 
 //  home route
 router.get('/', checkAuthenticated,(req, res) => {
-    //console.log(req.user)
+
+    // on url visit display this html
     res.render('index', {name: req.user.username})
   
 })

@@ -15,6 +15,25 @@
     width: 355px;
     text-align: center;
 }
+
+.album-button
+{
+    margin: auto auto;  
+    transition: background-color 0.2s;
+    transition: transform 0.2s;
+    width: 355px;
+    text-align: center;
+}
+
+.show-button
+{
+    margin: auto auto;  
+    transition: background-color 0.2s;
+    transition: transform 0.2s;
+    width: 355px;
+    text-align: center;
+}
+
 .movie-button
 {
     margin: auto auto;  
@@ -59,6 +78,20 @@
 
     }
 
+    .show-button:hover
+    {
+      transform: scale(1.1);
+      background-color: rgb(90, 33, 0);
+
+    }
+
+    .album-button:hover
+    {
+      transform: scale(1.1);
+      background-color: rgb(16, 150, 87);
+
+    }
+
  
     .button-container:has(.movie-button:hover)
     {
@@ -73,6 +106,17 @@
     .button-container:has(.video-button:hover)
     {
         background-color: rgb(90, 0, 0);
+
+    }
+
+    .button-container:has(.album-button:hover)
+    {
+        background-color: rgb(16, 150, 87);
+
+    }
+    .button-container:has(.show-button:hover)
+    {
+        background-color: rgb(90, 33, 0);
 
     }
 
@@ -113,6 +157,13 @@
 </a>
 
 
+<a href="/shows/new" class = "show-button" style="display: block;">
+
+    <img src="https://icons.iconarchive.com/icons/icons8/ios7/256/Household-Retro-Tv-icon.png" style="height: 300px;" class="button-image"> 
+    <p class="button-text">New Show</p>
+
+</a>
+
 
 
 <a href="/songs/new" class = "song-button" style="display: block;">
@@ -122,4 +173,10 @@
 
 </a>
 
+<a href="/albums/new" class = "album-button" style="display: block;">
+
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Spotify_logo_without_text.svg/1024px-Spotify_logo_without_text.svg.png" style="height: 300px;" class="button-image">
+    <p class="button-text">New Album</p>
+
+</a>
 </div>

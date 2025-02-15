@@ -1,0 +1,171 @@
+
+<h2> Search Songs</h2>
+<form action ="/songs" method="GET">
+<style>
+  .wrapper {
+  max-width: 100%;
+  overflow: hidden; 
+  height: auto;
+  white-space: nowrap;
+}
+
+.marquee {
+  white-space: nowrap;
+   /* overflow: hidden;  */
+   height: 18px;
+  display: inline-block;
+  animation: marquee 10s linear infinite;
+}
+
+.marquee p {
+  display: inline-block;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+
+
+}
+
+.results
+{
+  display: grid;
+   grid-template-columns: repeat(auto-fill, 270px); 
+  /* grid-template-columns: auto auto; */
+  /* width: fit-content; */
+  /* padding: 0px 15px 0px 15px; */
+  /* justify-content: center; */
+  justify-content: space-around
+}
+
+</style>
+<input type ="text" name="name" value="<%= searchOptions.name%>" placeholder="Search" style="border-radius: 17.5px; border: none; font-size: 20px; background-color:rgb(31, 31, 31); height: 40px; caret-color: white; color: white; padding-left: 10px;" size="50" >
+<select id = "mySelect" onchange="this.form.submit()" name="sort" id="cars" style="font-size: 20px; color: white; background-color: rgb(31, 31, 31); border: none;height: 40px; padding-left: 10px;"  >
+  <!-- <option value="" selected disabled hidden>Choose here</option> -->
+  <option value="a">Newest</option>
+  <option value="b">Oldest</option>
+  <option value="c">Average Rating</option>
+  <option value="d">Title</option>
+</select>
+</form>
+<script>
+  var temp = "<%=searchOptions.sort%>";
+  var mySelect = document.getElementById('mySelect');
+ // console.log(temp)
+  for(var i, j = 0; i = mySelect.options[j]; j++) {
+      if(i.value == temp) {
+          mySelect.selectedIndex = j;
+          break;
+      }
+  }
+
+  var rDiv
+  document.addEventListener("DOMContentLoaded", function(e) { 
+    rDiv = document.getElementById("myResults")
+var titles = document.getElementsByClassName("wrapper")
+
+console.log(titles.length)
+console.log(i)
+
+for (var i =0; i<titles.length;i++) {
+ // console.log(titles[i].innerHTML + ":" + titles[i].clientWidth)
+ var temp = titles[i].children[0].innerHTML
+  if(titles[i].clientWidth < titles[i].scrollWidth || titles[i].clientHeight < titles[i].scrollHeight)
+{
+  console.log(titles[i].innerHTML)
+
+  titles[i].replaceChildren()
+
+  // margin-top: 10px;
+  // margin-bottom:  5px;
+var mDiv = document.createElement("div")
+mDiv.className = "marquee"
+titles[i].appendChild(mDiv)
+var firstText = document.createElement("p")
+firstText.innerHTML = temp+"&nbsp;"
+firstText.style.margin = "10px 0px 5px 0px"
+firstText.style.fontSize = "15px"
+firstText.style.color = "rgb(255,255,255)"
+mDiv.appendChild(firstText)
+
+var secondText = document.createElement("p")
+secondText.innerHTML = temp
+secondText.style.margin = "10px 0px 5px 0px"
+secondText.style.fontSize = "15px"
+secondText.style.color = "rgb(255,255,255)"
+mDiv.appendChild(secondText)
+
+}
+
+
+//var pElement = titles[i].parentNode
+//console.log(pElement)
+
+// pElement.replaceChildren()
+
+// var mDiv = document.createElement("div")
+// mDiv.className = "marquee"
+// pElement.appendChild(mDiv)
+// var firstText = document.createElement("p")
+// firstText.innerHTML = temp+"&nbsp;"
+// mDiv.appendChild(firstText)
+
+// var secondText = document.createElement("p")
+// secondText.innerHTML = temp
+// mDiv.appendChild(secondText)
+
+
+
+
+        }
+
+
+
+      // var gridStyles = window.getComputedStyle(rDiv)
+      // const gridColumnCount = gridStyles.getPropertyValue("grid-template-columns").split(" ").length;
+      // const columnSize = gridStyles.getPropertyValue("grid-template-columns").split(" ")[0]
+
+      // rDiv.style.width = (gridColumnCount*parseFloat(columnSize)).toString() + "px"
+
+      // console.log((gridColumnCount*parseFloat(columnSize)).toString() + "px")
+      })
+  
+  
+      // function changedSize()
+      // {
+      //   console.log("test")
+        
+      //   var gridStyles = window.getComputedStyle(rDiv)
+      // const gridColumnCount = gridStyles.getPropertyValue("grid-template-columns").split(" ").length;
+      // const columnSize = gridStyles.getPropertyValue("grid-template-columns").split(" ")[0]
+
+      // rDiv.style.width = (gridColumnCount*parseFloat(columnSize)).toString() + "px"
+      // console.log((gridColumnCount*parseFloat(columnSize)).toString() + "px")
+      // }
+  
+  
+      // window.onresize = changedSize;
+  
+  </script>
+<br>
+<div class= "results" id = "myResults"> 
+<% albums.forEach(song => { %>
+    <!-- <a href = "/videos/<%=song.id%>"><div><%=song.title%></div></a> -->
+    <!-- <a href = "<%= song.link%>" target="_blank"> -->
+     
+        <a href = "/albums/<%=song.id%>" class = "song-item" style="background-color: rgb(<%=song.backgroundColor%>);">
+          <img class = "song-img" src="<%=song.imageAddress%>" alt="Lamp" width="200px">
+          <div class ="wrapper">
+            <p class = "vInfo" id = "overflo"> <%= song.title%></p>
+          </div>
+          <p style="margin: 5px 0px 0px 0px;"> <%= song.artist%></p>
+        </a>
+  
+ 
+<% }) %>
+</div>

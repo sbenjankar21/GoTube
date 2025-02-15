@@ -249,61 +249,40 @@ a
   <h1 style="text-align: center; color: white;">Favorite Songs</h1>
   <div class="favorite-song-holder"> 
 
+
+
+    <% for(var i = 0; i < user.favoriteSongs.length; i ++)  {%>
+      <% if(user.favoriteSongs[i] !== null) {%>
     <a class="favorite-song-item" href = "/songs/9999">
-        <img class = "song-img" src="https://i.scdn.co/image/ab67616d0000b27326f7f19c7f0381e56156c94a" alt="Lamp" width="200px">
-        <p class = "vInfo" id = "overflo"> <span style ="font-size: 20px; ">Flashing Lights</span><br> <span style="font-size: 12.5px; color:rgb(170, 170, 170)">Tyler, The Creator</span></p>
+        <img class = "song-img" src="<%= user.favoriteSongs[i].imageAddress %>" alt="Lamp" width="200px">
+        <p class = "vInfo" id = "overflo"> <span style ="font-size: 20px; "><%= user.favoriteSongs[i].title %></span><br> <span style="font-size: 12.5px; color:rgb(170, 170, 170)"><%= user.favoriteSongs[i].artist %></span></p>
   </a> 
-
-  <a class="favorite-song-item" href = "/songs/9999">
-    <img class = "song-img" src="https://i.scdn.co/image/ab67616d0000b27326f7f19c7f0381e56156c94a" alt="Lamp" width="200px">
-    <p class = "vInfo" id = "overflo"> <span style ="font-size: 20px; ">Flashing Lights</span><br> <span style="font-size: 12.5px; color:rgb(170, 170, 170)">Tyler, The Creator</span></p>
-</a> 
-<a class="favorite-song-item" href = "/songs/9999">
-  <img class = "song-img" src="https://i.scdn.co/image/ab67616d0000b27326f7f19c7f0381e56156c94a" alt="Lamp" width="200px">
-  <p class = "vInfo" id = "overflo"> <span style ="font-size: 20px; ">Flashing Lights</span><br> <span style="font-size: 12.5px; color:rgb(170, 170, 170)">Tyler, The Creator</span></p>
-</a> 
-<a class="favorite-song-item" href = "/songs/9999">
-  <img class = "song-img" src="https://i.scdn.co/image/ab67616d0000b27326f7f19c7f0381e56156c94a" alt="Lamp" width="200px">
-  <p class = "vInfo" id = "overflo"> <span style ="font-size: 20px; ">Flashing Lights</span><br> <span style="font-size: 12.5px; color:rgb(170, 170, 170)">Tyler, The Creator</span></p>
+  <% } else {%>
+    <a class="favorite-song-item" href = "/songs/9999">
+    
 </a> 
 
-<a class="favorite-song-item" href = "/songs/9999">
-  <img class = "song-img" src="https://i.scdn.co/image/ab67616d0000b27326f7f19c7f0381e56156c94a" alt="Lamp" width="200px">
-  <p class = "vInfo" id = "overflo"> <span style ="font-size: 20px; ">Flashing Lights</span><br> <span style="font-size: 12.5px; color:rgb(170, 170, 170)">Tyler, The Creator</span></p>
-</a> 
- 
-
-
+    <% }%>
+  <% } %>
 
 </div>
 
   <h1 style="text-align: center; color: white;">Favorite Movies</h1>
   <div class="favorite-movie-holder"> 
 
-    <a class="favorite-movie-item" href = "/songs/9999">
-        <img class = "song-img" src="https://image.tmdb.org/t/p/original/4oD6VEccFkorEBTEDXtpLAaz0Rl.jpg" alt="Lamp" width="200px">
-       
+    <% for(var i = 0; i < user.favoriteMovies.length; i ++)  {%>
+      <% if(user.favoriteMovies[i] !== null) {%>
+    <a class="favorite-song-item" href = "/songs/9999">
+        <img class = "song-img" src="https://image.tmdb.org/t/p/original<%= user.favoriteMovies[i].imageAddress %>" alt="Lamp" width="200px">
+        
   </a> 
-  <a class="favorite-movie-item" href = "/songs/9999">
-    <img class = "song-img" src="https://image.tmdb.org/t/p/original/4oD6VEccFkorEBTEDXtpLAaz0Rl.jpg" alt="Lamp" width="200px">
-   
-</a> 
-<a class="favorite-movie-item" href = "/songs/9999">
-  <img class = "song-img" src="https://image.tmdb.org/t/p/original/4oD6VEccFkorEBTEDXtpLAaz0Rl.jpg" alt="Lamp" width="200px">
- 
-</a> 
-<a class="favorite-movie-item" href = "/songs/9999">
-  <img class = "song-img" src="https://image.tmdb.org/t/p/original/4oD6VEccFkorEBTEDXtpLAaz0Rl.jpg" alt="Lamp" width="200px">
- 
-</a> 
-<a class="favorite-movie-item" href = "/songs/9999">
-  <img class = "song-img" src="https://image.tmdb.org/t/p/original/4oD6VEccFkorEBTEDXtpLAaz0Rl.jpg" alt="Lamp" width="200px">
- 
+  <% } else {%>
+    <a class="favorite-song-item" href = "/songs/9999">
+    
 </a> 
 
-
-
-
+    <% }%>
+  <% } %>
 
 
 </div>

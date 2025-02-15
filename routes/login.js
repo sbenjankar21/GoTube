@@ -12,21 +12,24 @@ const bodyParser = require('body-parser')
 function notAuthenticated(req, res, next)
 {
     if(req.isAuthenticated()) {
-        return res.redirect('/')
+    return res.redirect('/')
     }
 
     next()
 }
+
+// WEBSITE/login router
 router.get('/', notAuthenticated,(req, res) => {
     res.render('login/index',{layout: false})
 })
 
 
+
+// post router, and authenticate credentials
 router.post('/',  notAuthenticated, passport.authenticate('local',{
     successRedirect: '/',
     failureRedirect: '/login',
     failureFlash: true
-
 }))
 
 

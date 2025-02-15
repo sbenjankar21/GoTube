@@ -4,14 +4,14 @@ const Song = require('../models/song')
 const axios = require('axios')
 const Review = require('../models/review')
 const { parse } = require('dotenv')
-
+const Album = require('../models/album')
 // spotify token (implement global variable hopefull, not a big deal really ig)
 var spotify_token = "BQDc6o9uuqykQ8v2Rk-nvJetYFWAXAtMT6k46XSLp2BIOtLadit_B_fE7-juN61wHzOycx_f9yGOJmTLCydk4hFCmzUM3OeoFFZewvUHqckrLQt_flo"
 
 //get the audiopreview url from the scraped html, it returns an array so dont trip
 function extractAudioPreviewUrls(inputText) {
   const urls = [];
-  const regex = /"audioPreview":\{"url":"(.*?)"/g;
+  const regex = /"audioPreview":\{"format":"MP3_96","url":"(.*?)"/g;
   let match;
 
   while ((match = regex.exec(inputText)) !== null) {
@@ -50,7 +50,7 @@ async function getPreviewURL(trackId)
 {
   const response = await axios({
     method: 'get',
-    url: 'https://open.spotify.com/embed/track/'+trackId,
+    url: 'https://open.spotify.com/embed/album/'+trackId,
     responseType: 'document'
   })
 
@@ -139,12 +139,12 @@ router.get('/', checkAuthenticated, async (req,res) =>{
   }
 
   // find the songs with the searchopitns and sort by the sortOptions, collation ensures it using standard english conventinons when sorting (lowercase isnt higher than uppercase etc.)
-  const songs = await Song.find(searchOptions).collation({locale: "en" }).sort(sortOptions)
+  const albums = await Album.find(searchOptions).collation({locale: "en" }).sort(sortOptions)
 
   // render the html
-  res.render('songs/index', {
+  res.render('albums/index', {
     searchOptions: req.query,
-    songs: songs
+    albums: albums
   })
 
 })
@@ -175,7 +175,7 @@ return res.send({songs: response})
 router.get('/new', checkAuthenticated, async (req,res) =>{
 
   // render the html and pass the spotify token, layout is false cause its a bit different
-    res.render('songs/new',{
+    res.render('albums/new',{
         token: spotify_token,
         layout:false
     })
@@ -192,45 +192,47 @@ router.post('/update-token', checkAuthenticated, async (req,res) => {
 
 })
 
-// post route creates a new song
+// post route creates a new album
 router.post('/', checkAuthenticated, async (req,res) =>{
   // get info from the request
-  var song = req.body.song
+  var album = req.body.album
   var rating = req.body.rating
   var content = req.body.content
+
   
+  console.log(album)
   // get the audio preview and background color
-  var pURL = await getPreviewURL(song.id)
+  var pURL = await getPreviewURL(album.spotifyID)
 
   // try this
   try
   {
     // find songs that have the same id as the requested song
-    var songs = await Song.find({spotifyId: song.id})
-
+    var albums = await Album.find({spotifyId: album.spotifyID})
+    console.log(albums)
     // create new song
-    const newSong = new Song(
+    const newAlbum = new Album(
     {
-      title: song.name,
-      spotifyId: song.id,
-      artist: song.artists[0].name,
+      title: album.title,
+      spotifyId: album.spotifyID,
+      artist: album.artist,
       totalStars: 5,
       stars: parseInt(rating),
       datePosted: Date.now(),
-      imageAddress: song.album.images[0].url,
+      imageAddress: album.image,
       averageStars: (parseInt(rating)/5* 5).toFixed(2),
       previewURL: pURL[0],
       backgroundColor: pURL[1]
     })
 
     // if songs with the same is length is 0 than its a new song
-    if(songs.length === 0)
+    if(albums.length === 0)
       {
         // create a new review
         const newReview = Review({
           content: content,
           rating: parseInt(rating),
-          song: newSong,
+          album: newAlbum,
           user: req.user
         })
 
@@ -241,10 +243,10 @@ router.post('/', checkAuthenticated, async (req,res) =>{
         try
         {
           // save the song
-          const createdSong = await newSong.save()
+          const createdSong = await newAlbum.save()
           
           // redirect to the songs page
-          res.redirect(`songs/${createdSong.id}`)
+          res.redirect(`albums/${createdSong.id}`)
 
         }
 
@@ -269,7 +271,7 @@ router.post('/', checkAuthenticated, async (req,res) =>{
         const newReview = Review({
           content: content,
           rating: parseInt(rating),
-          song: songs[0],
+          album: albums[0],
           user: req.user
 
         })
@@ -281,8 +283,9 @@ router.post('/', checkAuthenticated, async (req,res) =>{
         let increasing = parseInt(rating)
 
         // find the existing song
-        let thisVid = await Song.findOne({spotifyId: song.id})
-
+        console.log(album.spotifyID)
+        let thisVid = await Album.findOne({spotifyId: album.spotifyID})
+        console.log(thisVid)
         // calculate the new rating
         let newStars = thisVid.stars + increasing;
 
@@ -293,13 +296,13 @@ router.post('/', checkAuthenticated, async (req,res) =>{
         let newAverageStars = (newStars/newTotalStars* 5).toFixed(2) 
 
         // update the song with the new values from above
-        await Song.updateOne({spotifyId: song.id}, {$set:{stars:  newStars, totalStars: newTotalStars, averageStars: newAverageStars}})
+        await Album.updateOne({spotifyId: album.spotifyID}, {$set:{stars:  newStars, totalStars: newTotalStars, averageStars: newAverageStars}})
 
         // try tis
         try
         {
           // redirect to the songs page
-          res.redirect(`songs/${thisVid.id}`)
+          res.redirect(`albums/${thisVid.id}`)
       
         }
 
@@ -330,14 +333,14 @@ router.get('/:id',checkAuthenticated, async (req, res) => {
   try 
   {
     // get the song using the id from the url
-    const song = await Song.findById(req.params.id)
-
+    const album = await Album.findById(req.params.id)
+    console.log(album)
     // get all the corresponding reviews and populated the values
-    const reviews = await Review.find({song: song}).populate("song").populate("user")
+    const reviews = await Review.find({album: album}).populate("album").populate("user")
 
     // render the html
-    res.render('songs/view', {
-      song: song,
+    res.render('albums/view', {
+      album: album,
       reviews: reviews
       //booksByVideo: books
     })

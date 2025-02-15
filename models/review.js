@@ -31,6 +31,12 @@ const reviewSchema = new mongoose.Schema({
         required: false,
         ref: "Movie"
     },
+    album:
+    {
+        type: mongoose.Schema.Types.ObjectId,
+        required: false,
+        ref: "Album"
+    },
     user:
     {
         type: mongoose.Schema.Types.ObjectId,

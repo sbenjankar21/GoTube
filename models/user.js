@@ -32,10 +32,17 @@ const userSchema = new mongoose.Schema({
     },
     favoriteSongs:
     {
-        type: [mongoose.Schema.Types.Mixed],
+        type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Song' }],
         required: false,
-        ref: "Song",
         default: [null, null, null, null, null]
+ 
+    },
+    favoriteMovies:
+    {
+        type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Movie' }],
+        required: false,
+        default: [null, null, null, null, null]
+ 
     }
 
 

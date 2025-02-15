@@ -3,7 +3,9 @@ const axios = require('axios')
 const router = express.Router()
 const bcrypt = require('bcrypt')
 const User = require('../models/user')
+const Song = require('../models/song')
 
+//checks if not logged in, redirects to home if logged in
 function notAuthenticated(req, res, next)
 {
     if(req.isAuthenticated()) {
@@ -13,30 +15,37 @@ function notAuthenticated(req, res, next)
     next()
 }
 
+// index router
 router.get('/',notAuthenticated, async (req, res) => {
     res.render('register/index',{layout: false})
-
 })
 
+
+// psot router, handles user creatino
 router.post('/', notAuthenticated,async (req, res) => {
     
+    //try this
     try
     {
-        console.log(req.body.password)
+        // hash the password from the request
         const hashedPassword = await bcrypt.hash(req.body.password, 10)
+
+        // create a new user with details
         const user = new User(
-            {
-                username: req.body.name,
-                email: req.body.email,
-                password : hashedPassword
+        {
+            username: req.body.name,
+            email: req.body.email,
+            password : hashedPassword,
+        })
 
-            })
-            const newUser = await user.save()
+        //save the user
+        await user.save()
 
-            console.log(await User.findOne())
-            res.redirect('/login')
+        // redirect to login page
+        res.redirect('/login')
     }
 
+    //otherwise do this
     catch(e){
         console.log(e)
         res.redirect('/register')

@@ -1,394 +1,209 @@
 <style></style>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.umd.js"></script>
 <script>
+
+    // get the spotify api token
     var tempToken = "<%=token%>";
+
+    // function to get songs from spotify api
     async function sendRequest(value)
     {
-        console.log("change")
-        // try{
-
-        // console.log(value)
-        // const response = await fetch("/songs/search?title="+value, {method: "GET"})
-        // const songs = await response.json()
-        // //console.log(songs.info)
-        // return response
-        // }
-        // catch(e){
-        //     console.log(e)
-        // }
+        // declare movie results
         var movieResults
+
+        // make sure input isn't empty
         if(value != "")
         {
 
-        try{
-
+            // try this
+            try
+            {
+                // make sure its not empty... again?
                 if(value != "")
                 {
-        console.log("search: " + value)
+
+                    // make a fetch request to tmdb api
+                    const response = await fetch('https://api.themoviedb.org/3/search/movie?query='+value+'&api_key=e1ebcaed511d642466017433aa7c2ec5', {
+                    method: 'GET',
+                    headers: {}
+                    });
+
+                    // if theres an error throw an error
+                    if(!response.ok)
+                    {
+                        throw new Error('Something went wrong');
+                    }
+
+                    // instantiate the movieResults with the api response
+                    movieResults = await response.json()
+
+                }
+            }
+
+            // on error
+            catch(e)
+            {
+                console.log(e)
+            }
+
+            // try this
+            try
+            {
+                // get the result div element
+                var resultDiv = document.getElementById("results-div")
+
+                // declare the new children
+                var newChildren = []
+
+                // empty out the result div
+                resultDiv.replaceChildren()
+
+                // movie id for each movie
+                var movieId = 0;
+
+                // for each result in the movie result do this function
+                movieResults.results.forEach(movie => {
+
+                    // create an image and sets its attributes
+                    var movieImage = document.createElement("img")
+                    movieImage.src = "https://image.tmdb.org/t/p/original"+movie.poster_path
+                    movieImage.style.height = "300px"
+                    movieImage.style.width = "200px"
+                    movieImage.style.margin = "0px 20px 20px 0px"
+                    movieImage.classList.add("movie-poster")
+
+                    // add the image to the result div
+                    resultDiv.appendChild(movieImage)
+
+                    // set the images id to the id
+                    movieImage.id = movieId.toString();
+
+                    // add an onclick function, pass in the posters id and all the results
+                    movieImage.onclick = function() {chooseMovie(this.id, movieResults)}
+
+                    //increase the id
+                    movieId++
+                })
+
+            }
 
 
-    //     const response = await fetch('https://api.spotify.com/v1/search?q=n&type=track', {
-    //     method: 'GET',
-    //     headers: {
-    //         "Authorization": 'Bearer BQBw6wscbn5otWn_zZgZd_GNVu2Vji4wDiyDl8_ed7CJ-jjXvF9-7rai54Ox57VGieZbn4yo8M02jjZ1nYuDug4QQMr98Qcy4Og3NbZL1lIGAJfbbiA'
-    //     }
-    //   });
-
-                    console.log("trying")
-      const response = await fetch('https://api.themoviedb.org/3/search/movie?query='+value+'&api_key=e1ebcaed511d642466017433aa7c2ec5', {
-        method: 'GET',
-        headers: {
+            catch(e)
+            {
+                console.log(e)
+            }
 
         }
-      });
-
-      if(!response.ok)
-      {
-        throw new Error('Something went wrong');
-      }
-      movieResults = await response.json()
-      //console.log(movieResults.tracks)
-    }
-    }
-
-    catch(e){
-       console.log("oh noor")
-       console.log(e)
 
     }
 
-
-
-    try{
-    //var newDiv = document.createElement("div")
-    var resultDiv = document.getElementById("results-div")
-    //resultDiv.remove()
-    //newDiv.id = "results"
-
-    var newChildren = []
-    var tempDiv = document.createElement('div')
-    resultDiv.replaceChildren()
-    var movieId = 0;
-    movieResults.results.forEach(movie => {
-
-        //var movieDiv = document.createElement("div")
-        //movieDiv.style.width = "900px"
-        //movieDiv.style.height = "100px"
-
-
-        var movieImage = document.createElement("img")
-        movieImage.src = "https://image.tmdb.org/t/p/original"+movie.poster_path
-        movieImage.style.height = "300px"
-        movieImage.style.width = "200px"
-        //movieImage.style.width = "100px"
-        //movieImage.style.float = "left"
-        movieImage.style.margin = "0px 20px 20px 0px"
-        movieImage.classList.add("movie-poster")
-        resultDiv.appendChild(movieImage)
-
-        //var titleP = document.createElement("p")
-        //titleP.innerHTML = movie.Title
-        //titleP.style.color = "rgb(255,255, 255)"
-        //var artistP = document.createElement("p")
-        //artistP.innerHTML = song.artists[0].name
-
-        //var infoDiv = document.createElement("div")
-       // infoDiv.appendChild(titleP)
-        //infoDiv.appendChild(artistP)
-        //infoDiv.style.margin= " auto 0px auto 20px "
-
-    //     position:relative;
-    // top:-2px;
-        // infoDiv.style.position = "relative"
-        // infoDiv.style.top = "-2px"
-        //infoDiv.style.display = "inline-block"
-        //infoDiv.style.marginTop = "-50px"
-        //infoDiv.style.float = "left"
-
-        //movieDiv.append(infoDiv)
-        //movieDiv.classList.add("song-item-result")
-        movieImage.id = movieId.toString();
-       // resultDiv.append(movieDiv)
-
-        movieImage.onclick = function() {chooseMovie(this.id, movieResults)}
-        movieId++
-    })
-
-    //document.body.appendChild(newDiv)
-    //console.log(tempDiv.children)
-    //resultDiv.children = tempDiv.children
-    }
-
-
-    catch(e)
-    {
-        console.log(e)
-    }
-
-
-   }
-
-
-
-
-    }
-//     const imageUrlToBase64 = async (url) => {
-//     const data = await fetch(url,
-//         {
-//             method: "get",
-//             mode: "no-cors"
-//         }
-//     )
-//     const blob = await data.blob();
-//     const reader = new FileReader();
-//     reader.readAsDataURL(blob);
-//     reader.onload = async () => {
-//         const base64data = reader.result;
-//         return await base64data
-//     }
-
-  
-    
-// }
-// console.log( imageUrlToBase64("https://img.youtube.com/vi/BTWPDboW38o/hq720.jpg"))
-console.log("hello")
-
-function getSecondPart(str) {
-    var mySubString
-
-    if(str.indexOf("https://youtu.be/") !== -1)
-    {
-        mySubString = str.substring(
-            str.lastIndexOf("/") + 1, 
-            str.indexOf("?")
-        );
-    }
-    
-    else if(str.indexOf("&") !== -1)
-    {
-        mySubString = str.substring(
-            str.indexOf("=") + 1, 
-            str.indexOf("&")
-        );
-    }
-
-    else
-    {
-        mySubString = str.split('=')[1];
-    }
-    return mySubString;
-}
-    // var newImage = document.createElement('img')
-    // newImage.style.display = "none"
-    // document.body.appendChild(newImage);
-
-
+    // create a new color thief
     const colorThief = new ColorThief();
-   // const img = document.querySelector('img');
 
-   function chooseSongFAKE(id, results)
-{
-    var song = results.tracks.items[id]
-    var containerDiv = document.getElementById("container")
-    containerDiv.replaceChildren()
+    async function chooseMovie(id, results)
+    {
+        // get the specific movie chosen
+        var movie = results.results[id]
 
+        // get the sub-div dib
+        var containerDiv = document.getElementById("sub-div")
 
-    var songDiv = document.createElement("div")
-        songDiv.style.width = "900px"
-        songDiv.style.height = "100px"
+        // empty the div out
+        containerDiv.replaceChildren()
 
+        // create another div
+        var anotherDiv = document.createElement('div')
 
+        // add the new div to the sub div and assign its atrributes
+        containerDiv.appendChild(anotherDiv)
+        anotherDiv.style.width = "800px"
+        anotherDiv.style.flex = "0 0 auto"
+
+        // create new image and assign its attributes
         var songImage = document.createElement("img")
-        songImage.src = song.album.images[0].url
-        //songImage.style.height = "100px"
-        songImage.style.width = "100px"
-        songImage.style.float = "left"
-
-        songDiv.appendChild(songImage)
-
-        var titleP = document.createElement("p")
-        titleP.innerHTML = song.name
-        titleP.style.color = "rgb(255,255, 255)"
-        var artistP = document.createElement("p")
-        artistP.innerHTML = song.artists[0].name
-
-        var infoDiv = document.createElement("div")
-        infoDiv.appendChild(titleP)
-        infoDiv.appendChild(artistP)
-        infoDiv.style.margin= " auto 0px auto 20px "
-
-    //     position:relative;
-    // top:-2px;
-        // infoDiv.style.position = "relative"
-        // infoDiv.style.top = "-2px"
-        //infoDiv.style.display = "inline-block"
-        //infoDiv.style.marginTop = "-50px"
-        infoDiv.style.float = "left"
-
-        songDiv.append(infoDiv)
-        songDiv.classList.add("song-item-result")
-        containerDiv.appendChild(songDiv)
-// <label >Rating</label>
-// <input style="width: 40px; margin-bottom: 10px;" type="text" name="rating" value=" "> 
-// <br>
-// <label>Content</label>
-
-// <br>
-// <textarea class = "textA" name="content" rows="4" cols="50"></textarea>
-
-var ratingLabel = document.createElement("label")
-ratingLabel.innerHTML = "Rating"
-containerDiv.appendChild(ratingLabel)
-
-var inputElement = document.createElement("input")
-inputElement.style.width = "40px"
-inputElement.style.marginBottom = "10px"
-inputElement.type = "text"
-inputElement.name = "rating"
-inputElement.value = ""
-inputElement.id = "rating-input"
-containerDiv.appendChild(inputElement)
-
-var breakElement = document.createElement("br")
-containerDiv.appendChild(breakElement)
-
-var contentLabel = document.createElement("label")
-contentLabel.innerHTML = "Content"
-containerDiv.appendChild(contentLabel)
-
-var newBreak = document.createElement("br")
-containerDiv.appendChild(newBreak)
-
-var textArea = document.createElement("textarea")
-textArea.classList.add("textA")
-textArea.name = "content"
-textArea.rows = "4"
-textArea.cols = "50"
-textArea.id = "text-area"
-containerDiv.append(textArea)
-
-
-// <a href ="/videos">Cancel</a>
-//     <button type="submit">Create</button>
-
-var anchor = document.createElement("a")
-anchor.href = "/songs"
-anchor.innerHTML = "Cancel"
-containerDiv.appendChild(anchor)
-
-var newButton = document.createElement("button")
-newButton.type = "submit"
-newButton.innerHTML = "Create"
-newButton.onclick = function() {sendData(song)}
-containerDiv.appendChild(newButton)
-
-    console.log(song.name)
-}
-
-
-async function chooseMovie(id, results)
-{
-    var movie = results.results[id]
-    var containerDiv = document.getElementById("sub-div")
-    containerDiv.replaceChildren()
-
-    var anotherDiv = document.createElement('div')
-    containerDiv.appendChild(anotherDiv)
-    anotherDiv.style.width = "800px"
-    anotherDiv.style.flex = "0 0 auto"
-
-    var thisLink = document.getElementById("enter-link")
-   // console.log(vid)
-    //<iframe width="560" height="315" src="https://www.youtube.com/embed/?si=zFv2_59A4Zgvz29U&autoplay=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-    var songImage = document.createElement("img")
         songImage.src = "https://image.tmdb.org/t/p/original"+movie.poster_path
-        //songImage.style.height = "200px"
         songImage.style.width = "200px"
+
+        // add the songImage to the div
         anotherDiv.appendChild(songImage)
-    // newIframe.src = "https://www.youtube.com/embed/"+getSecondPart(vid)+"?si=zFv2_59A4Zgvz29U&autoplay=1"
-    // newIframe.width = "560"
-    // newIframe.height ="315"
-    // newIframe.frameborder = "0"
-    // newIframe.allowFullscreen = true
-    // newIframe.style.display = "inline-block"
-    // containerDiv.appendChild(newIframe)
+
+        //
+        var formDiv = document.createElement('div')
+        formDiv.style.display = "inline-block"
+
+        formDiv.style.height = "100%"
+        formDiv.style.marginLeft = "20px"
+        anotherDiv.appendChild(formDiv)
+
+        var starDiv = document.createElement('div')
+        starDiv.style.textAlign = "center"
+        formDiv.append(starDiv)
+
+        var star1 = document.createElement('img')
+        star1.src = "/empty.svg"
+        star1.style.width = "50px"
+        star1.className = "star"
+        starDiv.append(star1)
+        star1.onclick = function() {gfg(1)}
+
+        var star2 = document.createElement('img')
+        star2.src = "/empty.svg"
+        star2.style.width = "50px"
+        star2.className = "star"
+        starDiv.append(star2)
+        star2.onclick = function() {gfg(2)}
 
 
-    var formDiv = document.createElement('div')
-    formDiv.style.display = "inline-block"
-
-    formDiv.style.height = "100%"
-    formDiv.style.marginLeft = "20px"
-    anotherDiv.appendChild(formDiv)
-
-    var starDiv = document.createElement('div')
-    starDiv.style.textAlign = "center"
-    formDiv.append(starDiv)
-
-    var star1 = document.createElement('img')
-    star1.src = "/empty.svg"
-    star1.style.width = "50px"
-    star1.className = "star"
-    starDiv.append(star1)
-    star1.onclick = function() {gfg(1)}
-
-    var star2 = document.createElement('img')
-    star2.src = "/empty.svg"
-    star2.style.width = "50px"
-    star2.className = "star"
-    starDiv.append(star2)
-    star2.onclick = function() {gfg(2)}
+        var star3 = document.createElement('img')
+        star3.src = "/empty.svg"
+        star3.style.width = "50px"
+        star3.className = "star"
+        starDiv.append(star3)
+        star3.onclick = function() {gfg(3)}
+        
+        var star4 = document.createElement('img')
+        star4.src = "/empty.svg"
+        star4.style.width = "50px"
+        star4.className = "star"
+        starDiv.append(star4)
+        star4.onclick = function() {gfg(4)}
 
 
-    var star3 = document.createElement('img')
-    star3.src = "/empty.svg"
-    star3.style.width = "50px"
-    star3.className = "star"
-    starDiv.append(star3)
-    star3.onclick = function() {gfg(3)}
-    
-    var star4 = document.createElement('img')
-    star4.src = "/empty.svg"
-    star4.style.width = "50px"
-    star4.className = "star"
-    starDiv.append(star4)
-    star4.onclick = function() {gfg(4)}
+        var star5 = document.createElement('img')
+        star5.src = "/empty.svg"
+        star5.style.width = "50px"
+        star5.className = "star"
+        starDiv.append(star5)
+        star5.onclick = function() {gfg(5)}
+
+        var newTA = document.createElement("textarea")
+        formDiv.append(newTA)
+        newTA.classList.add("textA")
+        newTA.name = "content"
+        newTA.rows = "7"
+        newTA.cols = "50"
+        newTA.id = "text-area"
+        newTA.style.marginTop = "20px"
 
 
-    var star5 = document.createElement('img')
-    star5.src = "/empty.svg"
-    star5.style.width = "50px"
-    star5.className = "star"
-    starDiv.append(star5)
-    star5.onclick = function() {gfg(5)}
+        var hiddenInput = document.createElement("input")
+        hiddenInput.type = "hidden"
+        hiddenInput.id = "hidden-data"
+        formDiv.append(hiddenInput)
 
-    var newTA = document.createElement("textarea")
-    formDiv.append(newTA)
-    newTA.classList.add("textA")
-    newTA.name = "content"
-    newTA.rows = "7"
-    newTA.cols = "50"
-    newTA.id = "text-area"
-    newTA.style.marginTop = "20px"
+        var newButton = document.createElement("button")
+        newButton.style.display = "block"
+        newButton.style.width = "100px"
+        newButton.style.height = "50px"
+        newButton.innerHTML = "Create"
+        formDiv.append(newButton)
 
-
-    var hiddenInput = document.createElement("input")
-    hiddenInput.type = "hidden"
-    hiddenInput.id = "hidden-data"
-    formDiv.append(hiddenInput)
-
-    var newButton = document.createElement("button")
-    newButton.style.display = "block"
-    newButton.style.width = "100px"
-    newButton.style.height = "50px"
-    newButton.innerHTML = "Create"
-    formDiv.append(newButton)
-
-    newButton.onclick = function() {sendData(movie)}
+        newButton.onclick = function() {sendData(movie)}
 
 
 
-}
+    }
 
 
 

@@ -5,6 +5,8 @@ if(process.env.NODE_ENV !== 'production')
     const User = require('./models/user')
     // const cors = require('cors')
 
+
+    
   
 const express = require('express')
 const axios = require('axios')
@@ -19,6 +21,9 @@ const methodOverride = require('method-override')
 initializePassport(passport, email =>  User.findOne({email: email}),  id =>  User.findById(id)
 )
 
+app.use(express.cookieParser('your secret option here'));
+app.use(express.session());
+
 
 const indexRouter = require('./routes/index')
 const videoRouter  = require('./routes/videos')
@@ -30,6 +35,7 @@ const songsRouter = require('./routes/songs')
 const moviesRouter = require('./routes/movies')
 const proxyRouter = require('./routes/proxy')
 const settingsRouter = require('./routes/settings')
+const albumRouter = require('./routes/album')
 
 app.set('view engine', 'ejs')
 app.set('views', __dirname + '/views')
@@ -64,6 +70,7 @@ app.use('/songs', songsRouter)
 app.use('/movies', moviesRouter)
 app.use('/proxy', proxyRouter)
 app.use('/settings', settingsRouter)
+app.use('/albums', albumRouter)
 
 app.delete('/logout', (req, res) => {
     req.logout(function(err) {

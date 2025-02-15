@@ -2,7 +2,7 @@
  * Video Schema
  */
 const mongoose = require('mongoose')
-const songSchema = new mongoose.Schema({
+const albumSchema = new mongoose.Schema({
     title:
     {
         type: String,
@@ -50,12 +50,6 @@ const songSchema = new mongoose.Schema({
         required: false,
         ref: "Review"
     },
-    previewURL:
-    {
-        type: String,
-        required: false,
-   
-    },
     backgroundColor:
     {
         type: String,
@@ -65,8 +59,21 @@ const songSchema = new mongoose.Schema({
     {
         type: Boolean,
         required: false
+    },
+    previewURL:
+    {
+        type: String,
+        required: false,
+   
+    },
+    songs:
+    {
+        type: [mongoose.Schema.Types.ObjectId],
+        required: true,
+        ref: "Song"
     }
+
 
 })
 
-module.exports = mongoose.model('Song', songSchema)
+module.exports = mongoose.model('Album', albumSchema)

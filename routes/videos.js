@@ -3,50 +3,10 @@ const router = express.Router()
 const Video = require('../models/video')
 const Review = require('../models/review')
 const User = require('../models/user')
-var xm = require('xhr2');
 const axios = require('axios')
 
 
-async function getAuth()
-{
-    try{
-      //make post request to SPOTIFY API for access token, sending relavent info
-      const token_url = 'https://accounts.spotify.com/api/token';
-      //const data = qs.stringify({'grant_type':'client_credentials'});
-      data = "grant_type=client_credentials&client_id=dc276981aa7543689c8bbd74979846ce&client_secret=c058d32f7ada4598926d803f3024ce95"
-  
-      const response = await axios({
-
-        method: 'post',
-        url: token_url,
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded' 
-        },
-        data: data
-      });
-
-    //   const response = await axios.post(token_url, data, {
-    //     headers: { 
-    //       'Content-Type': 'application/x-www-form-urlencoded' 
-    //     }
-    //   })
-      //return access token
-      console.log(response.data.access_token)
-
-      return await response.data.access_token;
-      //consawole.log(response.data.access_token);   
-    }
-
-
-    catch(error){
-      //on fail, log the error in console
-      console.log("BROKe")
-      console.log(error);
-    }
-  }
-
-
-// all videos route
+// check if logged in
 function checkAuthenticated(req, res, next)
 {
 
@@ -56,31 +16,31 @@ function checkAuthenticated(req, res, next)
 
      res.redirect('/login')
 }
+
+// function to make a request to a url
 async function httpGet(theUrl)
 {
-
-    // const response = await fetch(theUrl)
-    // const info = await response.json()
-    // console.log(info)
-
-
+    // try this
     try
     {
         const response = await axios({
             method: 'GET',
             url: theUrl
         });
-        console.log(theUrl)
-        console.log(response.data)
+
         return response.data;
 
     }
+
+    // otherwise
     catch(error)
     {
+        // if theres an error do this stuff but i never bothered to fill it out probaly should
         if(error.response)
-            {
+        {
 
-            }
+        }
+
         else if(error.request)
         {
 
@@ -93,7 +53,7 @@ async function httpGet(theUrl)
     }
 }
 
-
+//gets the youtube id from a link
 function getSecondPart(str) {
     var mySubString
 
@@ -117,57 +77,65 @@ function getSecondPart(str) {
     {
         mySubString = str.split('=')[1];
     }
+
     return mySubString;
 }
 
-function getSecondPart1(str) {
-
-       return mySubString = str.split('=')[1];
-
-}
+// index route
 router.get('/', checkAuthenticated, async (req, res) => {
-    console.log("AUTHORIZE")
-   //console.log(getAuth())
+
+    // declare search options and sortoptons
     let searchOptions = {}
     let sortOptions = {}
+
+    // make sure the req field isnt blank maybe change the name
     if(req.query.name != null & req.query.name !== "")
-        {
-            searchOptions.title = new RegExp(req.query.name, 'i')
-        }
-        console.log("ooga"+req.query.sort);
-        
+    {
+        // create a regex
+        searchOptions.title = new RegExp(req.query.name, 'i')
+    }
+
+    // sort by newest
     if(req.query.sort === "a")
-        {
-sortOptions.datePosted = -1;
-        }
+    {
+        sortOptions.datePosted = -1;
+    }
+
+    // sort by oldest
     else if(req.query.sort === "b")
     {
         sortOptions.datePosted = 1;
     }
 
+    //sort by highest average
     else if(req.query.sort === "c")
     {
-
-    sortOptions.averageStars = -1;
+        sortOptions.averageStars = -1;
     }
 
+    // sort by alphabetically title
     else if(req.query.sort === "d")
-        {
-            sortOptions.title = 1;
-        }
+    {
+        sortOptions.title = 1;
+    }
+
+    //try this
     try
     {
+        // find all the viedes with the searchoptions and use the sortOption, collation makes sure... just look it up bruh
         const videos = await Video.find(searchOptions).collation({locale: "en" }).sort(sortOptions)
+
+        // render the html
         res.render('videos/index', {
             videos: videos, 
             searchOptions: req.query,
-            
-            
         })
     }
 
+    // other wise
     catch(e)
     {
+        // log the error and redirect to home page
         console.log(e)
         res.redirect('/')
     }
@@ -182,102 +150,129 @@ router.get('/new', checkAuthenticated,(req, res) => {
 
 //console.log("test" + httpGet('https://www.googleapis.com/youtube/v3/videos?part=snippet&id=MouZdENJddQ&fields=items(id,snippet)&key=AIzaSyARlc8Jj0BqWyLS7DpFbkyZ6SHNyUepuqQ'))
 router.post('/', checkAuthenticated,async (req, res) => {
-
+    // get the info from the request
     var text = req.body.link;
     var rating = req.body.rating;
     var con = req.body.content;
-    console.log(req.body.bgcolor)
+
+    // try this
     try
     {
+    // video api link
     var url = 'https://www.googleapis.com/youtube/v3/videos?part=snippet&id='+getSecondPart(text)+'&fields=items(id,snippet)&key=AIzaSyARlc8Jj0BqWyLS7DpFbkyZ6SHNyUepuqQ'
+
+    // make a request to the api and record the response in vid
     var vid = await httpGet(url)
-     var vids = await Video.find({imageAddress: "https://img.youtube.com/vi/"+getSecondPart(text)+"/hq720.jpg"});
-     console.log(vids.length)
-     var videoJson = vid //------
 
-     const video = new Video(
-         {
-             title: videoJson.items[0].snippet.title,
-             link: text,
-             author: videoJson.items[0].snippet.channelTitle,
-             totalStars: 5,
-             stars: parseInt(rating),
-             datePosted: Date.now(),
-             imageAddress: "https://img.youtube.com/vi/"+getSecondPart(text)+"/hq720.jpg",
-             averageStars: (parseInt(rating)/5* 5).toFixed(2),
-             youtubeId: getSecondPart(text),
-             backgroundColor: req.body.bgcolor
-         })
+    // look for vides with the same imageAddress
+    var vids = await Video.find({imageAddress: "https://img.youtube.com/vi/"+getSecondPart(text)+"/hq720.jpg"});
 
+    // ion know why i did this but too lazy to fix it
+    var videoJson = vid //------
 
-     if(vids.length === 0)
-        {
-         const review = new Review(
-             {
-                 content: con,
-                 rating: parseInt(rating),
-                 video: video,
-                 user: req.user
- 
-             })
-             const newReview = await review.save()
-        }
-    else
+    // create a new video
+    const video = new Video(
     {
+        title: videoJson.items[0].snippet.title,
+        link: text,
+        author: videoJson.items[0].snippet.channelTitle,
+        totalStars: 5,
+        stars: parseInt(rating),
+        datePosted: Date.now(),
+        imageAddress: "https://img.youtube.com/vi/"+getSecondPart(text)+"/hq720.jpg",
+        averageStars: (parseInt(rating)/5* 5).toFixed(2),
+        youtubeId: getSecondPart(text),
+        backgroundColor: req.body.bgcolor
+    })
+
+
+    // if vids length is 0 that means its a new video
+    if(vids.length === 0)
+    {
+        // create a new review
         const review = new Review(
-            {
-                content: con,
-                rating: parseInt(rating),
-                video: vids[0],
-                user: req.user
-
-            })
-            const newReview = await review.save()
-    }
-             
-     if(vids.length === 0)
         {
-            console.log("new")
+            content: con,
+            rating: parseInt(rating),
+            video: video,
+            user: req.user
 
-            console.log(Review.findOne())
+        })
+
+        // save the review
+        await review.save()
+
+        // try this
         try
         {
+            // save the video
             const newVideo = await video.save()
 
-             res.redirect(`videos/${newVideo.id}`)
-                       // res.redirect('videos')
+            // redirect to the new video's page
+            res.redirect(`videos/${newVideo.id}`)
+
         }
+
+        // on error do this
         catch(e)
         {
+            // log the error and render the page agian with an error message
             console.log(e)
             res.render('videos/new',{
                 video: video,
                 errorMessage: 'Error Creating Video...'
             })
         }
-        }
-
-        else{
-            
-            let temp = 5;
-            let increasing = parseInt(rating)
-            let thisVid = await Video.findOne({imageAddress: "https://img.youtube.com/vi/"+getSecondPart(text)+"/hq720.jpg"})
-            let newStars = thisVid.stars + increasing;
-            let newTotalStars = thisVid.totalStars + 5;
-            let newAverageStars = (newStars/newTotalStars* 5).toFixed(2) 
-            await Video.updateOne({imageAddress: "https://img.youtube.com/vi/"+getSecondPart(text)+"/hq720.jpg"}, {$set:{stars:  newStars, totalStars: newTotalStars, averageStars: newAverageStars}})
-
-
-                res.render('videos/new',{
-                    video: vids[0],
-                    errorMessage: 'review made'
-                })
-            
-        }
     }
+
+    // otherwise the video already exists
+    else
+    {
+        // create a new review
+        const review = new Review(
+        {
+            content: con,
+            rating: parseInt(rating),
+            video: vids[0],
+            user: req.user
+
+        })
+
+        //save the review
+        await review.save()
+
+        // the rating from the request
+        let increasing = parseInt(rating)
+
+        // find the vid that already exists
+        let thisVid = await Video.findOne({imageAddress: "https://img.youtube.com/vi/"+getSecondPart(text)+"/hq720.jpg"})
+
+        // calculate the new given stars
+        let newStars = thisVid.stars + increasing;
+
+        // caluclate the new total stars
+        let newTotalStars = thisVid.totalStars + 5;
+
+        // calculate the new average stars
+        let newAverageStars = (newStars/newTotalStars* 5).toFixed(2) 
+
+        // find the existing video and update the values with the ones above
+        await Video.updateOne({imageAddress: "https://img.youtube.com/vi/"+getSecondPart(text)+"/hq720.jpg"}, {$set:{stars:  newStars, totalStars: newTotalStars, averageStars: newAverageStars}})
+
+        // render the html FIX IT BITCHHH IT DOESNT WORK
+        res.render('videos/new',{
+            video: vids[0],
+            errorMessage: 'review made'
+        })
+        
+    }
+             
+    }
+
+    // otherwiese
     catch(e)
     {
-        console.log("WHY NO RENDER")
+        // log the error and render the page again with an error message
         console.log(e)
         res.render('videos/new',{
             video: {link: req.body.name},
@@ -288,51 +283,67 @@ router.post('/', checkAuthenticated,async (req, res) => {
 
 // new view route
 router.get('/:id',checkAuthenticated, async (req, res) => {
-    console.log("through here>????")
-    try {
+
+    // try this
+    try 
+    {
+        // get the video from the url id
         const video = await Video.findById(req.params.id)
+
+        // get the corresponding reviews
         const reviews = await Review.find({video: video}).populate(["video","user"])
 
-        //const books = await Book.find({ video: video.id }).limit(6).exec()
+        // render the page 
         res.render('videos/view', {
-          video: video,
-          reviews: reviews
-          //booksByVideo: books
+            video: video,
+            reviews: reviews
+            //booksByVideo: books
         })
-      } catch {
-       res.redirect('/')
-       console.log("uhh?")
-      }
+
+    } 
+    
+    //otherwise
+    catch 
+    {
+        // redirect home
+        res.redirect('/')
+    }
 })
 
 
-
+// new like post router
 router.post('/:id/new-like', checkAuthenticated, async(req,res) =>
 {
+    // try this
     try{
+
+        // find the video the user is trying to like
         const video = await Video.findById(req.params.id)
+
+        // get the session user and populate values
         const sessionUser = await req.user.populate("likedVideos friends");
 
-
-
-            if(sessionUser.likedVideos.find(vidInArray => {
-
+        // check to see if the video is already liked from the user
+        if(sessionUser.likedVideos.find(vidInArray => {
                 return vidInArray._id.equals(video._id)
-              }) !== undefined)
-              {
-                console.log("already liked")
-              }
+        }) !== undefined)
+        {
+        console.log("already liked")
+        }
         
-              else
-              {
-                console.log("not liked!")
-                await User.updateOne(
-                    { _id: req.user.id },
-                    { $push: { likedVideos: video } })
-          }
+        // otherwise the vi has not been liked
+        else
+        {
+            // find the user by update and add the vid to their liked videos
+            await User.updateOne({ _id: req.user.id },{ $push: { likedVideos: video } })
+        }
     }
+
+    // on error
     catch(e)
     {
+
+        // log the error and redirect to home page
         console.log(e)
         res.redirect('/')
 

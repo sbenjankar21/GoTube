@@ -2,18 +2,18 @@
  * Video Schema
  */
 const mongoose = require('mongoose')
-const songSchema = new mongoose.Schema({
+const showSchema = new mongoose.Schema({
     title:
     {
         type: String,
         required: true
     },
-    spotifyId:
+    tmdbID:
     {
         type: String,
         required: true
     },
-    artist:
+    director:
     {
         type: String,
         required: true
@@ -50,23 +50,27 @@ const songSchema = new mongoose.Schema({
         required: false,
         ref: "Review"
     },
-    previewURL:
-    {
-        type: String,
-        required: false,
-   
-    },
     backgroundColor:
     {
         type: String,
         required: false
     },
-    empty:
+    backdrop:
     {
-        type: Boolean,
+        type: String,
+        required: false
+    },
+    releaseDate:
+    {
+        type: String,
+        required: true
+    },
+    trailerYoutube:
+    {
+        type: String,
         required: false
     }
 
 })
 
-module.exports = mongoose.model('Song', songSchema)
+module.exports = mongoose.model('Show', showSchema)
